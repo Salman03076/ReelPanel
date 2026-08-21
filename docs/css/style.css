@@ -1,4 +1,9 @@
-#ReelContain{
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+#ReelContain {
     height: 500px;
     width: 500px;
 }

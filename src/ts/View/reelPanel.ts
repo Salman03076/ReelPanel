@@ -1,34 +1,54 @@
 
-import { Container, Texture } from "pixi.js";
-import { stage } from "../index.js";
-import { assetsMap } from "../ulity.js";
+import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
+import { getStage } from "../index.js";
+import { assetsMap, reelPanelImage } from "../ulity.js";
 
 
 // creat the reelPanel
-class reelPanel {
+export class reelPanel {
     private reelContainer: Container;
+    private reelBackgrondSprite: Sprite;
     private reelContainerTecture: Texture;
+    public symblSprite: Sprite;
+    public Symbols: Sprite[] = [];
+    // private symbolTexture: Texture;
 
 
 
 
 
     constructor() {
-
+        this.createReelContainer()
+        this.loadSymbol()
     }
 
     //create the  Reel container
-    async createReelContainer(): Promise<void> {
-        this.reelContainer = new Container();
-        this.reelContainerTecture = assetsMap[`reelPanelImage`] 
-
-
-        stage.addChild(this.reelContainer)
-
-
-
-
+    private async createReelContainer(): Promise<void> {
+        this.reelContainer = new Container;
+        this.reelContainerTecture = await reelPanelImage();
+        this.reelBackgrondSprite = new Sprite(this.reelContainerTecture);
+        this.reelBackgrondSprite.anchor.set(0.5)
+        this.reelBackgrondSprite.x = innerWidth / 2;
+        this.reelBackgrondSprite.y = innerHeight / 2;
+        this.reelBackgrondSprite.height = 600
+        this.reelBackgrondSprite.width = 200
+        this.reelContainer = this.reelBackgrondSprite;
+        getStage().addChild(this.reelContainer);
     }
+
+
+    //symbol set the array
+    private async loadSymbol(): Promise<void> {
+        for (const symbolRefresh of Object.values(assetsMap)) {
+            const texture = await symbolRefresh
+            this.symblSprite = new Sprite(texture)
+            this.Symbols.push(this.symblSprite)
+            console.log("load symbol")
+        }
+    }
+
+
+
 
 
 }

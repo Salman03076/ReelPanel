@@ -1,7 +1,7 @@
 {
   "name": "reelpanel",
   "version": "1.0.0",
-  "description": "",
+  "description": "��#\u0000 \u0000R\u0000e\u0000e\u0000l\u0000P\u0000a\u0000n\u0000e\u0000l\u0000\r\u0000 \u0000",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -20,6 +20,15 @@
     "gsap": "^3.15.0",
     "http-server": "^14.1.1",
     "pixi.js": "^8.19.0",
-    "typescript": "^7.0.2"
-  }
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Salman03076/ReelPanel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Salman03076/ReelPanel/issues"
+  },
+  "homepage": "https://github.com/Salman03076/ReelPanel#readme"
 }

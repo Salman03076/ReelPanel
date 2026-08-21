@@ -1,10 +1,19 @@
-import { application } from "./app.js"
+import { application } from "./app.js";
+import { Container, type ContainerChild } from "pixi.js";
+import { reelPanel } from "./View/reelPanel.js";
 
 
-export let stage;
 
-(async () => (
-    stage = await application()
-))
+let stage: Container<ContainerChild>;
 
+//All file initialiazation
+(async () => {
+    stage = await application();
+    await new reelPanel()
+})();
+
+
+export const getStage = () => {
+    return stage;
+};
 
