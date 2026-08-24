@@ -45312,6 +45312,7 @@ ${e2}`);
   init_textureFrom();
   init_Container();
   init_Sprite();
+  init_Ticker();
   init_eventemitter3();
   extensions.add(browserExt, webworkerExt);
 
@@ -45332,10 +45333,24 @@ ${e2}`);
     console.log("reelPanelload");
     return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reelcontainerImage.png`);
   };
+  var reelPanelBgColor = async () => {
+    return await loadTexture(`reelbgcolor`, `assets/reelContainerimage/reelbgColor.png`);
+  };
+  var pandaSymboll = async () => {
+    return await loadTexture("pandaSymbol", `assets/reelSymbols/symbol1.png`);
+  };
+  var letterSymbol2 = async () => {
+    return await loadTexture("letterSymbol", `assets/reelSymbols/symbol2.png`);
+  };
+  var lermpsymbol3 = async () => {
+    return await loadTexture(`lermpsymbol`, `assets/reelSymbols/symbol3.png`);
+  };
+  var wildSymbol4 = async () => {
+    return await loadTexture(`wildSymbol`, `assets/reelSymbols/symbol4.png`);
+  };
   var loadTexture = async (textureName, textureURL) => {
     if (!assetsMap[`${textureName}`]) {
       assetsMap[`${textureName}`] = await Assets.load(textureURL);
-      console.log(assetsMap);
     }
     return assetsMap[`${textureName}`];
   };
@@ -45345,34 +45360,92 @@ ${e2}`);
     reelContainer;
     reelBackgrondSprite;
     reelContainerTecture;
+    reelContainerbgcolor;
     symblSprite;
     Symbols = [];
-    // private symbolTexture: Texture;
+    symbol1;
+    symbol2;
+    symbol3;
+    symbol4;
     constructor() {
       this.createReelContainer();
-      this.loadSymbol();
     }
     //create the  Reel container
     async createReelContainer() {
       this.reelContainer = new Container();
+      this.reelContainer.y = innerHeight - this.reelContainer.height;
+      this.reelContainerbgcolor = new Sprite(await reelPanelBgColor());
+      this.reelContainerbgcolor.anchor.set(0.5);
+      this.reelContainerbgcolor.height = 800;
+      this.reelContainerbgcolor.width = 270;
+      this.reelContainerbgcolor.y = innerHeight - this.reelContainerbgcolor.height;
       this.reelContainerTecture = await reelPanelImage();
       this.reelBackgrondSprite = new Sprite(this.reelContainerTecture);
       this.reelBackgrondSprite.anchor.set(0.5);
-      this.reelBackgrondSprite.x = innerWidth / 2;
-      this.reelBackgrondSprite.y = innerHeight / 2;
-      this.reelBackgrondSprite.height = 600;
-      this.reelBackgrondSprite.width = 200;
-      this.reelContainer = this.reelBackgrondSprite;
+      this.reelContainer.x = innerWidth / 2;
+      this.reelContainer.y = innerHeight / 2;
+      this.reelBackgrondSprite.height = 800;
+      this.reelBackgrondSprite.width = 270;
+      this.reelBackgrondSprite.y = innerHeight - this.reelBackgrondSprite.height;
+      this.reelContainer.addChild(this.reelContainerbgcolor);
+      await this.loadSymbol();
+      this.symbolsPrePosition();
+      this.reelContainer.addChild(this.reelBackgrondSprite);
       getStage().addChild(this.reelContainer);
     }
     //symbol set the array
     async loadSymbol() {
-      for (const symbolRefresh of Object.values(assetsMap)) {
-        const texture = await symbolRefresh;
-        this.symblSprite = new Sprite(texture);
-        this.Symbols.push(this.symblSprite);
-        console.log("load symbol");
+      for (let i2 = 0; i2 < 4; i2++) {
+        let texture;
+        switch (i2) {
+          case 0:
+            texture = await pandaSymboll();
+            break;
+          case 1:
+            texture = await letterSymbol2();
+            break;
+          case 2:
+            texture = await lermpsymbol3();
+            break;
+          case 3:
+            texture = await wildSymbol4();
+            break;
+        }
+        if (texture) {
+          this.symblSprite = new Sprite(texture);
+          this.symblSprite.anchor.set(0.5);
+          this.Symbols.push(this.symblSprite);
+          console.log(this.Symbols);
+        }
       }
+    }
+    symbolsPrePosition() {
+      for (let i2 = 0; i2 < this.Symbols.length; i2++) {
+        let symbols = this.Symbols[i2];
+        symbols.anchor.set(0.5);
+        symbols.width = 200;
+        symbols.height = 200;
+        symbols.y = 200 * i2;
+        this.reelContainer.addChild(this.Symbols[i2]);
+      }
+      this.reelSpin();
+    }
+    reelSpin() {
+      const speed = 1;
+      const totalSymbolsHeight = this.reelBackgrondSprite.height;
+      Ticker.shared.add(() => {
+        for (let num = 0; num < this.Symbols.length; num++) {
+          let symbols = this.Symbols[num];
+          for (let j2 = 0; j2 < this.Symbols.length; j2++) {
+            symbols.alpha = 1;
+            symbols.y += speed;
+          }
+          if (symbols.y > totalSymbolsHeight) {
+            symbols.alpha = -1;
+            symbols.y -= totalSymbolsHeight;
+          }
+        }
+      });
     }
   };
 
