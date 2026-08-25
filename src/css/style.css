@@ -7,3 +7,23 @@
     height: 500px;
     width: 500px;
 }
+
+
+#reelSpin {
+    height: 70px;
+    width: 70px;
+    background-color: #960000;
+    border: none;
+    border-radius: 50%;
+    color: gold;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+    position:relative;
+    top: 300px;
+    left: 5px;
+    justify-self: center;
+    border: 2px solid gold;
+
+}

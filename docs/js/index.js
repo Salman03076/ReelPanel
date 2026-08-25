@@ -45356,42 +45356,64 @@ ${e2}`);
   };
 
   // src/ts/View/reelPanel.ts
+  var reelSpinbtn = document.getElementById(`reelSpin`);
+  var currentReelPanel;
+  reelSpinbtn?.addEventListener(`click`, () => {
+    const isSpin = true;
+    if (isSpin) {
+      currentReelPanel?.playReelSpin();
+    } else {
+      currentReelPanel?.stopReelSpin();
+    }
+  });
   var reelPanel = class {
     reelContainer;
+    bgContainer;
+    symContain;
     reelBackgrondSprite;
     reelContainerTecture;
     reelContainerbgcolor;
     symblSprite;
     Symbols = [];
-    symbol1;
-    symbol2;
-    symbol3;
-    symbol4;
+    isspining = false;
     constructor() {
+      currentReelPanel = this;
+      this.reelContainer = new Container();
+      this.bgContainer = new Container();
+      this.symContain = new Container();
       this.createReelContainer();
+      addEventListener(`resize`, this.manageGameSize.bind(this));
     }
     //create the  Reel container
     async createReelContainer() {
-      this.reelContainer = new Container();
-      this.reelContainer.y = innerHeight - this.reelContainer.height;
+      this.reelContainer.x = innerWidth / 2;
+      this.reelContainer.y = innerHeight / 2;
+      await this.bgColor();
+      this.bgContainer.addChild(this.symContain);
+      await this.bgsprite();
+      this.reelContainer.addChild(this.bgContainer);
+      getStage().addChild(this.reelContainer);
+      await this.loadSymbol();
+      this.symbolsPrePosition();
+    }
+    async bgColor() {
       this.reelContainerbgcolor = new Sprite(await reelPanelBgColor());
       this.reelContainerbgcolor.anchor.set(0.5);
       this.reelContainerbgcolor.height = 800;
-      this.reelContainerbgcolor.width = 270;
-      this.reelContainerbgcolor.y = innerHeight - this.reelContainerbgcolor.height;
+      this.reelContainerbgcolor.width = 300;
+      this.bgContainer.addChild(this.reelContainerbgcolor);
+    }
+    async bgsprite() {
       this.reelContainerTecture = await reelPanelImage();
       this.reelBackgrondSprite = new Sprite(this.reelContainerTecture);
       this.reelBackgrondSprite.anchor.set(0.5);
+      this.reelBackgrondSprite.height = 800;
+      this.reelBackgrondSprite.width = 300;
+      this.bgContainer.addChild(this.reelBackgrondSprite);
+    }
+    manageGameSize() {
       this.reelContainer.x = innerWidth / 2;
       this.reelContainer.y = innerHeight / 2;
-      this.reelBackgrondSprite.height = 800;
-      this.reelBackgrondSprite.width = 270;
-      this.reelBackgrondSprite.y = innerHeight - this.reelBackgrondSprite.height;
-      this.reelContainer.addChild(this.reelContainerbgcolor);
-      await this.loadSymbol();
-      this.symbolsPrePosition();
-      this.reelContainer.addChild(this.reelBackgrondSprite);
-      getStage().addChild(this.reelContainer);
     }
     //symbol set the array
     async loadSymbol() {
@@ -45426,26 +45448,33 @@ ${e2}`);
         symbols.width = 200;
         symbols.height = 200;
         symbols.y = 200 * i2;
-        this.reelContainer.addChild(this.Symbols[i2]);
+        this.symContain.addChild(this.Symbols[i2]);
       }
-      this.reelSpin();
     }
-    reelSpin() {
-      const speed = 1;
+    reelSpin = () => {
+      const speed = 2;
       const totalSymbolsHeight = this.reelBackgrondSprite.height;
-      Ticker.shared.add(() => {
-        for (let num = 0; num < this.Symbols.length; num++) {
-          let symbols = this.Symbols[num];
-          for (let j2 = 0; j2 < this.Symbols.length; j2++) {
-            symbols.alpha = 1;
-            symbols.y += speed;
-          }
-          if (symbols.y > totalSymbolsHeight) {
-            symbols.alpha = -1;
-            symbols.y -= totalSymbolsHeight;
-          }
+      for (let num = 0; num < this.Symbols.length; num++) {
+        let symbols = this.Symbols[num];
+        for (let j2 = 0; j2 < this.Symbols.length; j2++) {
+          symbols.alpha = 1;
+          symbols.y += speed;
         }
-      });
+        if (symbols.y > totalSymbolsHeight) {
+          symbols.alpha = 0;
+          symbols.y -= totalSymbolsHeight;
+        }
+      }
+    };
+    playReelSpin() {
+      if (this.isspining) return;
+      this.isspining = true;
+      Ticker.shared.add(this.reelSpin);
+    }
+    stopReelSpin() {
+      if (this.isspining) return;
+      this.isspining = false;
+      Ticker.shared.remove(this.reelSpin);
     }
   };
 
