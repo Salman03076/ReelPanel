@@ -45311,6 +45311,7 @@ ${e2}`);
   // node_modules/pixi.js/lib/index.mjs
   init_textureFrom();
   init_Container();
+  init_Graphics();
   init_Sprite();
   init_Ticker();
   init_eventemitter3();
@@ -45348,6 +45349,9 @@ ${e2}`);
   var wildSymbol4 = async () => {
     return await loadTexture(`wildSymbol`, `assets/reelSymbols/symbol4.png`);
   };
+  var bambooSymbol5 = async () => {
+    return await loadTexture(`bambooSymbol5`, `assets/reelSymbols/symbol6.png`);
+  };
   var loadTexture = async (textureName, textureURL) => {
     if (!assetsMap[`${textureName}`]) {
       assetsMap[`${textureName}`] = await Assets.load(textureURL);
@@ -45355,39 +45359,32 @@ ${e2}`);
     return assetsMap[`${textureName}`];
   };
 
-  // src/ts/view/Reel.ts
-  var Reel = class extends Container {
+  // src/ts/view/background.ts
+  var background = class {
+    reel;
     reelContainer;
     bgContainer;
-    reelBackgrondSprite;
-    reelContainerTecture;
     reelContainerbgcolor;
-    Symbols = [];
-    isSpining = false;
+    reelContainerTecture;
+    reelBackgrondSprite;
     constructor() {
-      super();
+      addEventListener(`resize`, this.manageGameSize.bind(this));
       this.reelContainer = new Container();
       this.reelContainer.label = "reelContainer";
       this.bgContainer = new Container();
       this.bgContainer.label = "bgContainer";
-      this.label = "symContain";
-      this.createReelContainer();
-      addEventListener(`resize`, this.manageGameSize.bind(this));
+      this.reelContainer.addChild(this.bgContainer);
+      getStage().addChild(this.reelContainer);
+      this.bginit();
     }
-    getReelState() {
-      return this.isSpining;
+    getBgCtr() {
+      return this.bgContainer;
     }
-    //create the  Reel container
-    async createReelContainer() {
+    async bginit() {
       this.reelContainer.x = innerWidth / 2;
       this.reelContainer.y = innerHeight / 2;
       await this.bgColor();
-      this.bgContainer.addChild(this);
       await this.bgsprite();
-      this.reelContainer.addChild(this.bgContainer);
-      getStage().addChild(this.reelContainer);
-      await this.loadSymbol();
-      this.symbolsPrePosition();
     }
     async bgColor() {
       this.reelContainerbgcolor = new Sprite(await reelPanelBgColor());
@@ -45402,15 +45399,56 @@ ${e2}`);
       this.reelBackgrondSprite.anchor.set(0.5);
       this.reelBackgrondSprite.height = 800;
       this.reelBackgrondSprite.width = 300;
+      this.reelBackgrondSprite.zIndex = 2;
       this.bgContainer.addChild(this.reelBackgrondSprite);
     }
     manageGameSize() {
       this.reelContainer.x = innerWidth / 2;
       this.reelContainer.y = innerHeight / 2;
     }
+    getBgSprite() {
+      return this.reelBackgrondSprite;
+    }
+    getReelCtr() {
+      return this.reelContainer;
+    }
+  };
+
+  // src/ts/view/Reel.ts
+  var Reel2 = class extends Container {
+    background;
+    isSpining = false;
+    spinSpeed = 10;
+    Symbols = [];
+    bg;
+    reelCtr;
+    constructor() {
+      super();
+      this.label = "symContain";
+      this.y = -145.5;
+      this.SetupSym();
+    }
+    getReelState() {
+      return this.isSpining;
+    }
+    //create the  Reel container
+    async SetupSym() {
+      this.background = new background();
+      this.bg = this.background.getBgSprite();
+      console.log(this.bg);
+      this.reelCtr = this.background.getReelCtr();
+      console.log(this.reelCtr);
+      await this.loadSymbol();
+      this.symbolsPrePosition();
+      this.reelmask();
+      this.background.getBgCtr().addChild(this);
+    }
+    addsymbols() {
+      this.background.getBgCtr().addChild(this);
+    }
     //symbol set the array
     async loadSymbol() {
-      for (let i2 = 0; i2 < 4; i2++) {
+      for (let i2 = 0; i2 < 5; i2++) {
         let texture;
         switch (i2) {
           case 0:
@@ -45425,16 +45463,21 @@ ${e2}`);
           case 3:
             texture = await wildSymbol4();
             break;
+          case 4:
+            texture = await bambooSymbol5();
+            break;
         }
         if (texture) {
           const symblSprite = new Sprite(texture);
           symblSprite.label = `sym_${i2}`;
           symblSprite.anchor.set(0.5);
+          symblSprite.width = 180;
+          symblSprite.height = 180;
           this.Symbols.push(symblSprite);
           console.log(this.Symbols);
-          this.SulleArray(this.Symbols);
         }
       }
+      this.SulleArray(this.Symbols);
     }
     SulleArray(array) {
       for (let i2 = this.Symbols.length - 1; i2 > 0; i2--) {
@@ -45444,42 +45487,64 @@ ${e2}`);
       return array;
     }
     symbolsPrePosition() {
-      for (let i2 = 0; i2 < this.Symbols.length; i2++) {
+      const totalSymbolsHeight = this.bg;
+      const upperExtraSym = this.Symbols[0];
+      upperExtraSym.y = -200;
+      upperExtraSym.width = 180;
+      upperExtraSym.height = 180;
+      this.addChild(upperExtraSym);
+      for (let i2 = 1; i2 < this.Symbols.length - 1; i2++) {
         let symbols = this.Symbols[i2];
         symbols.anchor.set(0.5);
-        symbols.width = 200;
-        symbols.height = 200;
-        symbols.y = 200 * i2;
+        symbols.y = 200 * (i2 - 1);
         this.addChild(this.Symbols[i2]);
-        if (symbols.y > this.reelBackgrondSprite.height) {
-          symbols.alpha = 0;
-        }
-      }
-    }
-    reelSpin() {
-      const speed = 2;
-      const totalSymbolsHeight = this.reelBackgrondSprite.height;
-      for (let num = 0; num < this.Symbols.length; num++) {
-        let symbols = this.Symbols[num];
-        for (let j2 = 0; j2 < this.Symbols.length; j2++) {
-          symbols.alpha = 1;
-          symbols.y += speed;
-        }
-        if (symbols.y > totalSymbolsHeight) {
+        if (symbols.y > this.bg) {
           symbols.alpha = 0;
           symbols.y -= totalSymbolsHeight;
         }
       }
+      const lowerExtraSym = this.Symbols[4];
+      lowerExtraSym.y = 600;
+      lowerExtraSym.width = 180;
+      lowerExtraSym.height = 180;
+      this.addChild(lowerExtraSym);
     }
+    reelSpin() {
+      const totalSymbolsHeight = 800;
+      for (let num = 0; num < this.Symbols.length; num++) {
+        let symbols = this.Symbols[num];
+        symbols.alpha = 1;
+        symbols.y += this.spinSpeed;
+        if (this.children[this.children.length - 1].y > totalSymbolsHeight) {
+          symbols.y = symbols.y - totalSymbolsHeight - 200;
+          this.addChildAt(symbols, 0);
+        }
+      }
+    }
+    spinboundle = this.reelSpin.bind(this);
     playReelSpin() {
       if (this.isSpining) return;
       this.isSpining = true;
-      Ticker.shared.add(this.reelSpin.bind(this));
+      Ticker.shared.add(this.spinboundle);
     }
     stopReelSpin() {
       if (!this.isSpining) return;
       this.isSpining = false;
-      Ticker.shared.remove(this.reelSpin.bind(this));
+      Ticker.shared.remove(this.spinboundle);
+    }
+    reelmask() {
+      const mask = new Graphics();
+      mask.label = "symbolsMask";
+      mask;
+      mask.rect(
+        -104,
+        -241.5,
+        200,
+        570
+      );
+      mask.fill(16777215);
+      this.mask = mask;
+      this.reelCtr.addChild(mask);
     }
   };
 
@@ -45487,7 +45552,7 @@ ${e2}`);
   var stage;
   (async () => {
     stage = await application();
-    const reel = new Reel();
+    const reel = new Reel2();
     const spinBtn = document.getElementById(`spineBtn`);
     spinBtn.addEventListener(`click`, () => {
       if (!reel.getReelState()) {

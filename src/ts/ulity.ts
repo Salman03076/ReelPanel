@@ -9,7 +9,7 @@ export const reelPanelImage = async (): Promise<Texture> => {
     return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reel.png`)
 }
 
-export const reelPanelBgColor = async (): Promise<Texture>=>{
+export const reelPanelBgColor = async (): Promise<Texture> => {
     return await loadTexture(`reelbgcolor`, `assets/reelContainerimage/reelbgColor.png`)
 }
 
@@ -28,6 +28,14 @@ export const lermpsymbol3 = async (): Promise<Texture> => {
 export const wildSymbol4 = async (): Promise<Texture> => {
     return await loadTexture(`wildSymbol`, `assets/reelSymbols/symbol4.png`);
 }
+
+
+export const bambooSymbol5 = async (): Promise<Texture> => {
+    return await loadTexture(`bambooSymbol5`, `assets/reelSymbols/symbol6.png`);
+}
+
+
+
 const loadTexture = async (textureName: string, textureURL: string) => {
 
     if (!assetsMap[`${textureName}`]) {
