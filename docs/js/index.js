@@ -45318,12 +45318,12 @@ ${e2}`);
 
   // src/ts/app.ts
   var application = async () => {
-    console.log("set the pixi");
+    console.log("Pixi setup ready!");
     const app = new Application();
     await app.init({ background: "#030607", resizeTo: window });
     globalThis.__PIXI_APP_ = app;
-    const ReelContain = document.getElementById("ReelContain");
-    ReelContain?.appendChild(app.canvas);
+    const gameContainer = document.getElementById("gameContainer");
+    gameContainer.appendChild(app.canvas);
     return app.stage;
   };
 
@@ -45331,7 +45331,7 @@ ${e2}`);
   var assetsMap = [];
   var reelPanelImage = async () => {
     console.log("reelPanelload");
-    return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reelcontainerImage.png`);
+    return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reel.png`);
   };
   var reelPanelBgColor = async () => {
     return await loadTexture(`reelbgcolor`, `assets/reelContainerimage/reelbgColor.png`);
@@ -45355,41 +45355,34 @@ ${e2}`);
     return assetsMap[`${textureName}`];
   };
 
-  // src/ts/View/reelPanel.ts
-  var reelSpinbtn = document.getElementById(`reelSpin`);
-  var currentReelPanel;
-  reelSpinbtn?.addEventListener(`click`, () => {
-    const isSpin = true;
-    if (isSpin) {
-      currentReelPanel?.playReelSpin();
-    } else {
-      currentReelPanel?.stopReelSpin();
-    }
-  });
-  var reelPanel = class {
+  // src/ts/view/Reel.ts
+  var Reel = class extends Container {
     reelContainer;
     bgContainer;
-    symContain;
     reelBackgrondSprite;
     reelContainerTecture;
     reelContainerbgcolor;
-    symblSprite;
     Symbols = [];
-    isspining = false;
+    isSpining = false;
     constructor() {
-      currentReelPanel = this;
+      super();
       this.reelContainer = new Container();
+      this.reelContainer.label = "reelContainer";
       this.bgContainer = new Container();
-      this.symContain = new Container();
+      this.bgContainer.label = "bgContainer";
+      this.label = "symContain";
       this.createReelContainer();
       addEventListener(`resize`, this.manageGameSize.bind(this));
+    }
+    getReelState() {
+      return this.isSpining;
     }
     //create the  Reel container
     async createReelContainer() {
       this.reelContainer.x = innerWidth / 2;
       this.reelContainer.y = innerHeight / 2;
       await this.bgColor();
-      this.bgContainer.addChild(this.symContain);
+      this.bgContainer.addChild(this);
       await this.bgsprite();
       this.reelContainer.addChild(this.bgContainer);
       getStage().addChild(this.reelContainer);
@@ -45434,12 +45427,21 @@ ${e2}`);
             break;
         }
         if (texture) {
-          this.symblSprite = new Sprite(texture);
-          this.symblSprite.anchor.set(0.5);
-          this.Symbols.push(this.symblSprite);
+          const symblSprite = new Sprite(texture);
+          symblSprite.label = `sym_${i2}`;
+          symblSprite.anchor.set(0.5);
+          this.Symbols.push(symblSprite);
           console.log(this.Symbols);
+          this.SulleArray(this.Symbols);
         }
       }
+    }
+    SulleArray(array) {
+      for (let i2 = this.Symbols.length - 1; i2 > 0; i2--) {
+        const random = Math.floor(Math.random() * (i2 + 1));
+        [this.Symbols[i2], array[random]] = [array[random], this.Symbols[i2]];
+      }
+      return array;
     }
     symbolsPrePosition() {
       for (let i2 = 0; i2 < this.Symbols.length; i2++) {
@@ -45448,10 +45450,13 @@ ${e2}`);
         symbols.width = 200;
         symbols.height = 200;
         symbols.y = 200 * i2;
-        this.symContain.addChild(this.Symbols[i2]);
+        this.addChild(this.Symbols[i2]);
+        if (symbols.y > this.reelBackgrondSprite.height) {
+          symbols.alpha = 0;
+        }
       }
     }
-    reelSpin = () => {
+    reelSpin() {
       const speed = 2;
       const totalSymbolsHeight = this.reelBackgrondSprite.height;
       for (let num = 0; num < this.Symbols.length; num++) {
@@ -45465,16 +45470,16 @@ ${e2}`);
           symbols.y -= totalSymbolsHeight;
         }
       }
-    };
+    }
     playReelSpin() {
-      if (this.isspining) return;
-      this.isspining = true;
-      Ticker.shared.add(this.reelSpin);
+      if (this.isSpining) return;
+      this.isSpining = true;
+      Ticker.shared.add(this.reelSpin.bind(this));
     }
     stopReelSpin() {
-      if (this.isspining) return;
-      this.isspining = false;
-      Ticker.shared.remove(this.reelSpin);
+      if (!this.isSpining) return;
+      this.isSpining = false;
+      Ticker.shared.remove(this.reelSpin.bind(this));
     }
   };
 
@@ -45482,7 +45487,17 @@ ${e2}`);
   var stage;
   (async () => {
     stage = await application();
-    await new reelPanel();
+    const reel = new Reel();
+    const spinBtn = document.getElementById(`spineBtn`);
+    spinBtn.addEventListener(`click`, () => {
+      if (!reel.getReelState()) {
+        spinBtn.innerHTML = "STOP";
+        reel.playReelSpin();
+      } else {
+        spinBtn.innerHTML = "SPIN";
+        reel.stopReelSpin();
+      }
+    });
   })();
   var getStage = () => {
     return stage;

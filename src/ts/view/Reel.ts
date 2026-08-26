@@ -1,33 +1,17 @@
 
-import { Container, Sprite, Texture, Ticker, TilingSprite } from "pixi.js";
+import { Container, Sprite, Texture, Ticker } from "pixi.js";
 import { getStage } from "../index.js";
 import { lermpsymbol3, letterSymbol2, pandaSymboll, reelPanelBgColor, reelPanelImage, wildSymbol4 } from "../ulity.js";
 
-
-const reelSpinbtn = document.getElementById(`reelSpin`) as HTMLButtonElement;
-let currentReelPanel: reelPanel | undefined;
-
-reelSpinbtn?.addEventListener(`click`, () => {
-    const isSpin = !false;
-    if (isSpin) {
-        currentReelPanel?.playReelSpin();
-    } else {
-        currentReelPanel?.stopReelSpin();
-    }
-})
-
-
 // creat the reelPanel\
-export class reelPanel {
+export class Reel extends Container {
     private reelContainer: Container;
     private bgContainer: Container;
-    private symContain: Container;
     private reelBackgrondSprite: Sprite;
     private reelContainerTecture: Texture;
     private reelContainerbgcolor: Sprite;
-    public symblSprite: Sprite;
     public Symbols: Sprite[] = [];
-    private isspining: boolean = false;
+    private isSpining: boolean = false;
 
 
 
@@ -35,12 +19,18 @@ export class reelPanel {
 
 
     constructor() {
-        currentReelPanel = this;
-        this.reelContainer = new Container;
-        this.bgContainer = new Container;
-        this.symContain = new Container;
+        super();
+        this.reelContainer = new Container();
+        this.reelContainer.label = "reelContainer";
+        this.bgContainer = new Container();
+        this.bgContainer.label = "bgContainer";
+        this.label = "symContain";
         this.createReelContainer();
         addEventListener(`resize`, this.manageGameSize.bind(this));
+    }
+
+    public getReelState(): boolean {
+        return this.isSpining;
     }
 
     //create the  Reel container
@@ -48,7 +38,7 @@ export class reelPanel {
         this.reelContainer.x = innerWidth / 2;
         this.reelContainer.y = innerHeight / 2;
         await this.bgColor();
-        this.bgContainer.addChild(this.symContain);
+        this.bgContainer.addChild(this);
         await this.bgsprite();
         this.reelContainer.addChild(this.bgContainer);
         getStage().addChild(this.reelContainer);
@@ -113,29 +103,44 @@ export class reelPanel {
             }
 
             if (texture) {
-                this.symblSprite = new Sprite(texture);
-                this.symblSprite.anchor.set(0.5);
-                this.Symbols.push(this.symblSprite);
+                const symblSprite = new Sprite(texture);
+                symblSprite.label = `sym_${i}`;
+                symblSprite.anchor.set(0.5);
+                this.Symbols.push(symblSprite);
                 console.log(this.Symbols);
+                this.SulleArray(this.Symbols)
             }
         }
     };
 
 
 
+    private SulleArray(array: Sprite[]): Sprite[] {
+        for (let i = this.Symbols.length - 1; i > 0; i--) {
+            const random: number = Math.floor(Math.random() * (i + 1));
+            [this.Symbols[i], array[random]] = [array[random], this.Symbols[i]];
+        }
+        return array;
+    }
+
     private symbolsPrePosition(): void {
         for (let i = 0; i < this.Symbols.length; i++) {
+            // let indexnum=Math.floor(Math.random()*this.Symbols.length)
             let symbols = this.Symbols[i];
             symbols.anchor.set(0.5)
             symbols.width = 200;
             symbols.height = 200;
             symbols.y = 200 * i;
-            this.symContain.addChild(this.Symbols[i])
+            this.addChild(this.Symbols[i])
+            if (symbols.y > this.reelBackgrondSprite.height) {
+                symbols.alpha = 0;
+                // symbols.y -= totalSymbolsHeight;
+            }
         }
     };
 
 
-    private reelSpin = () => {
+    private reelSpin(): void {
         const speed = 2;
         const totalSymbolsHeight = this.reelBackgrondSprite.height;
         for (let num = 0; num < this.Symbols.length; num++) {
@@ -149,24 +154,28 @@ export class reelPanel {
                 symbols.y -= totalSymbolsHeight;
             }
         }
-
+        
     }
 
 
 
     public playReelSpin() {
-        if (this.isspining) return;
-        this.isspining = true;
-        Ticker.shared.add(this.reelSpin);
+        if (this.isSpining) return;
+        this.isSpining = true;
+        Ticker.shared.add(this.reelSpin.bind(this));
     }
 
 
     public stopReelSpin() {
-        if (this.isspining) return;
-        this.isspining = false;
-        Ticker.shared.remove(this.reelSpin);
+        if (!this.isSpining) return;
+        this.isSpining = false;
+        Ticker.shared.remove(this.reelSpin.bind(this));
 
     };
+
+
+
+
 
 
 

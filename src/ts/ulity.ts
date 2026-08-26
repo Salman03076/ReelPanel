@@ -6,7 +6,7 @@ export const assetsMap = []
 
 export const reelPanelImage = async (): Promise<Texture> => {
     console.log("reelPanelload");
-    return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reelcontainerImage.png`)
+    return await loadTexture(`reelPanelimage`, `assets/reelContainerimage/reel.png`)
 }
 
 export const reelPanelBgColor = async (): Promise<Texture>=>{
