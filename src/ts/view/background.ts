@@ -15,6 +15,7 @@ export class background {
 
 
 
+
     constructor() {
         addEventListener(`resize`, this.manageGameSize.bind(this));
         this.reelContainer = new Container();

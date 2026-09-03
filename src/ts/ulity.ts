@@ -1,6 +1,11 @@
 
 // load the game asset
-import { Texture, Assets } from 'pixi.js';
+import { Texture, Assets, } from 'pixi.js';
+import { calculatepercetage } from './view/load.js';
+
+export let countLoadAsset: number = 0;
+
+
 
 export const assetsMap = []
 
@@ -13,41 +18,48 @@ export const reelPanelBgColor = async (): Promise<Texture> => {
     return await loadTexture(`reelbgcolor`, `assets/reelContainerimage/reelbgColor.png`)
 }
 
-export const pandaSymboll = async (): Promise<Texture> => {
-    return await loadTexture('pandaSymbol', `assets/reelSymbols/symbol1.png`);
-}
-
-export const letterSymbol2 = async (): Promise<Texture> => {
-    return await loadTexture('letterSymbol', `assets/reelSymbols/symbol2.png`);
-}
-
-export const lermpsymbol3 = async (): Promise<Texture> => {
-    return await loadTexture(`lermpsymbol`, `assets/reelSymbols/symbol3.png`)
-}
-
-export const wildSymbol4 = async (): Promise<Texture> => {
-    return await loadTexture(`wildSymbol`, `assets/reelSymbols/symbol4.png`);
-}
-
-
-export const bambooSymbol5 = async (): Promise<Texture> => {
-    return await loadTexture(`bambooSymbol5`, `assets/reelSymbols/symbol6.png`);
-}
-
-
 
 const loadTexture = async (textureName: string, textureURL: string) => {
-
     if (!assetsMap[`${textureName}`]) {
         assetsMap[`${textureName}`] = await Assets.load(textureURL);
-        // console.log(assetsMap)
+        console.log(assetsMap)
+        countLoadAsset++
+        calculatepercetage()
 
     }
-
-
     return assetsMap[`${textureName}`];
-
 };
+
+
+export const assetMap: Texture[] = [];
+
+const assets = [
+    "assets/reelSymbols/symbol1.png",
+    "assets/reelSymbols/symbol2.png",
+    "assets/reelSymbols/symbol3.png",
+    "assets/reelSymbols/symbol4.png",
+    "assets/reelSymbols/symbol5.png",
+];
+
+export async function loadAssets(): Promise<void> {
+
+    for (const path of assets) {
+
+        const texture = await Assets.load<Texture>(path);
+
+        assetMap.push(texture);
+        countLoadAsset++
+        calculatepercetage()
+    }
+    console.log(countLoadAsset)
+}
+
+
+
+
+
+
+
 
 
 

@@ -12516,11 +12516,11 @@ Deprecated since v${version}`;
          * @param bundleId - The id of the bundle to add
          * @param assets - A record of the asset or assets that will be chosen from when loading via the specified key
          */
-        addBundle(bundleId, assets) {
+        addBundle(bundleId, assets2) {
           const assetNames = [];
-          let convertedAssets = assets;
-          if (!Array.isArray(assets)) {
-            convertedAssets = Object.entries(assets).map(([alias, src]) => {
+          let convertedAssets = assets2;
+          if (!Array.isArray(assets2)) {
+            convertedAssets = Object.entries(assets2).map(([alias, src]) => {
               if (typeof src === "string" || Array.isArray(src)) {
                 return { alias, src };
               }
@@ -12578,11 +12578,11 @@ Deprecated since v${version}`;
          * @param aliases - the UnresolvedAsset or array of UnresolvedAssets to add to the resolver
          */
         add(aliases) {
-          const assets = [];
+          const assets2 = [];
           if (Array.isArray(aliases)) {
-            assets.push(...aliases);
+            assets2.push(...aliases);
           } else {
-            assets.push(aliases);
+            assets2.push(aliases);
           }
           let keyCheck;
           keyCheck = (key) => {
@@ -12590,7 +12590,7 @@ Deprecated since v${version}`;
               warn(`[Resolver] already has key: ${key} overwriting`);
             }
           };
-          const assetArray = convertToList(assets);
+          const assetArray = convertToList(assets2);
           assetArray.forEach((asset) => {
             const { src } = asset;
             let {
@@ -12701,12 +12701,12 @@ Deprecated since v${version}`;
             const assetNames = this._bundles[bundleId];
             if (assetNames) {
               const results = this.resolve(assetNames);
-              const assets = {};
+              const assets2 = {};
               for (const key in results) {
                 const asset = results[key];
-                assets[this._extractAssetIdFromBundle(bundleId, key)] = asset;
+                assets2[this._extractAssetIdFromBundle(bundleId, key)] = asset;
               }
-              out2[bundleId] = assets;
+              out2[bundleId] = assets2;
             }
           });
           return singleAsset ? out2[bundleIds[0]] : out2;
@@ -12734,22 +12734,22 @@ Deprecated since v${version}`;
           keys.forEach((key) => {
             if (!this._resolverHash[key]) {
               if (this._assetMap[key]) {
-                let assets = this._assetMap[key];
-                const preferredOrder = this._getPreferredOrder(assets);
+                let assets2 = this._assetMap[key];
+                const preferredOrder = this._getPreferredOrder(assets2);
                 preferredOrder?.priority.forEach((priorityKey) => {
                   preferredOrder.params[priorityKey].forEach((value) => {
-                    const filteredAssets = assets.filter((asset) => {
+                    const filteredAssets = assets2.filter((asset) => {
                       if (asset[priorityKey]) {
                         return asset[priorityKey] === value;
                       }
                       return false;
                     });
                     if (filteredAssets.length) {
-                      assets = filteredAssets;
+                      assets2 = filteredAssets;
                     }
                   });
                 });
-                this._resolverHash[key] = assets[0];
+                this._resolverHash[key] = assets2[0];
               } else {
                 this._resolverHash[key] = this._buildResolvedAsset({
                   alias: [key],
@@ -12779,9 +12779,9 @@ Deprecated since v${version}`;
          * Internal function for figuring out what prefer criteria an asset should use.
          * @param assets
          */
-        _getPreferredOrder(assets) {
-          for (let i2 = 0; i2 < assets.length; i2++) {
-            const asset = assets[i2];
+        _getPreferredOrder(assets2) {
+          for (let i2 = 0; i2 < assets2.length; i2++) {
+            const asset = assets2[i2];
             const preferred = this._preferredOrder.find((preference) => preference.params.format.includes(asset.format));
             if (preferred) {
               return preferred;
@@ -13132,8 +13132,8 @@ Deprecated since v${version}`;
               texture = imageTexture;
             } else {
               const imagePath = copySearchParams(basePath + (imageFilename ?? asset.meta.image), options.src);
-              const assets = await loader.load([{ src: imagePath, data: textureOptions }]);
-              texture = assets[imagePath];
+              const assets2 = await loader.load([{ src: imagePath, data: textureOptions }]);
+              texture = assets2[imagePath];
             }
             const spritesheet = new Spritesheet({
               texture: texture.source,
@@ -43716,7 +43716,7 @@ ${parts.join("\n")}
       const options = typeof onProgressOrOptions === "function" ? { ..._Loader2.defaultOptions, ...this.loadOptions, onProgress: onProgressOrOptions } : { ..._Loader2.defaultOptions, ...this.loadOptions, ...onProgressOrOptions || {} };
       const { onProgress, onError, strategy, retryCount, retryDelay } = options;
       let count2 = 0;
-      const assets = {};
+      const assets2 = {};
       const singleAsset = isSingleItem(assetsToLoadIn);
       const assetsToLoad = convertToList(assetsToLoadIn, (item) => ({
         alias: [item],
@@ -43726,13 +43726,13 @@ ${parts.join("\n")}
       const total = assetsToLoad.reduce((sum, asset) => sum + (asset.progressSize || 1), 0);
       const promises = assetsToLoad.map(async (asset) => {
         const url = path.toAbsolute(asset.src);
-        if (assets[asset.src]) return;
-        await this._loadAssetWithRetry(url, asset, { onProgress, onError, strategy, retryCount, retryDelay }, assets);
+        if (assets2[asset.src]) return;
+        await this._loadAssetWithRetry(url, asset, { onProgress, onError, strategy, retryCount, retryDelay }, assets2);
         count2 += asset.progressSize || 1;
         if (onProgress) onProgress(count2 / total);
       });
       await Promise.all(promises);
-      return singleAsset ? assets[assetsToLoad[0].src] : assets;
+      return singleAsset ? assets2[assetsToLoad[0].src] : assets2;
     }
     /**
      * Unloads one or more assets. Any unloaded assets will be destroyed, freeing up memory for your app.
@@ -43776,7 +43776,7 @@ ${parts.join("\n")}
         return hash;
       }, {});
     }
-    async _loadAssetWithRetry(url, asset, options, assets) {
+    async _loadAssetWithRetry(url, asset, options, assets2) {
       let attempt = 0;
       const { onError, strategy, retryCount, retryDelay } = options;
       const wait = (ms) => new Promise((r2) => setTimeout(r2, ms));
@@ -43785,11 +43785,11 @@ ${parts.join("\n")}
           if (!this.promiseCache[url]) {
             this.promiseCache[url] = this._getLoadPromiseAndParser(url, asset);
           }
-          assets[asset.src] = await this.promiseCache[url].promise;
+          assets2[asset.src] = await this.promiseCache[url].promise;
           return;
         } catch (e2) {
           delete this.promiseCache[url];
-          delete assets[asset.src];
+          delete assets2[asset.src];
           attempt++;
           const isLast = strategy !== "retry" || attempt > retryCount;
           if (strategy === "retry" && !isLast) {
@@ -44763,8 +44763,8 @@ ${e2}`);
      * @see {@link LoaderParser} For asset-specific data options
      * @advanced
      */
-    add(assets) {
-      this.resolver.add(assets);
+    add(assets2) {
+      this.resolver.add(assets2);
     }
     async load(urls, onProgress) {
       if (!this._initialized) {
@@ -44838,8 +44838,8 @@ ${e2}`);
      * @see {@link Assets.unloadBundle} For unloading bundles
      * @see {@link AssetsManifest} For manifest format details
      */
-    addBundle(bundleId, assets) {
-      this.resolver.addBundle(bundleId, assets);
+    addBundle(bundleId, assets2) {
+      this.resolver.addBundle(bundleId, assets2);
     }
     /**
      * Loads a bundle or multiple bundles of assets. Bundles are collections of related assets
@@ -45084,11 +45084,11 @@ ${e2}`);
       if (typeof keys === "string") {
         return Cache.get(keys);
       }
-      const assets = {};
+      const assets2 = {};
       for (let i2 = 0; i2 < keys.length; i2++) {
-        assets[i2] = Cache.get(keys[i2]);
+        assets2[i2] = Cache.get(keys[i2]);
       }
-      return assets;
+      return assets2;
     }
     /**
      * helper function to map resolved assets back to loaded assets
@@ -45328,7 +45328,24 @@ ${e2}`);
     return app.stage;
   };
 
+  // src/ts/view/load.ts
+  function calculatepercetage() {
+    const totalAssets = 7;
+    const percentage = Math.floor(countLoadAsset / totalAssets * 100);
+    const gameName = document.getElementById("gameName");
+    const loadBar = document.getElementById("loadBar");
+    const load = document.getElementById("load");
+    load.style.backgroundColor = "#B50000";
+    load.style.width = `${percentage}%`;
+    if (percentage == 100) {
+      loadBar.style.display = "none";
+      gameName.style.display = "none";
+    }
+    console.log(`Assets loaded: ${percentage}%`);
+  }
+
   // src/ts/ulity.ts
+  var countLoadAsset = 0;
   var assetsMap = [];
   var reelPanelImage = async () => {
     console.log("reelPanelload");
@@ -45337,26 +45354,154 @@ ${e2}`);
   var reelPanelBgColor = async () => {
     return await loadTexture(`reelbgcolor`, `assets/reelContainerimage/reelbgColor.png`);
   };
-  var pandaSymboll = async () => {
-    return await loadTexture("pandaSymbol", `assets/reelSymbols/symbol1.png`);
-  };
-  var letterSymbol2 = async () => {
-    return await loadTexture("letterSymbol", `assets/reelSymbols/symbol2.png`);
-  };
-  var lermpsymbol3 = async () => {
-    return await loadTexture(`lermpsymbol`, `assets/reelSymbols/symbol3.png`);
-  };
-  var wildSymbol4 = async () => {
-    return await loadTexture(`wildSymbol`, `assets/reelSymbols/symbol4.png`);
-  };
-  var bambooSymbol5 = async () => {
-    return await loadTexture(`bambooSymbol5`, `assets/reelSymbols/symbol6.png`);
-  };
   var loadTexture = async (textureName, textureURL) => {
     if (!assetsMap[`${textureName}`]) {
       assetsMap[`${textureName}`] = await Assets.load(textureURL);
+      console.log(assetsMap);
+      countLoadAsset++;
+      calculatepercetage();
     }
     return assetsMap[`${textureName}`];
+  };
+  var assetMap = [];
+  var assets = [
+    "assets/reelSymbols/symbol1.png",
+    "assets/reelSymbols/symbol2.png",
+    "assets/reelSymbols/symbol3.png",
+    "assets/reelSymbols/symbol4.png",
+    "assets/reelSymbols/symbol5.png"
+  ];
+  async function loadAssets() {
+    for (const path2 of assets) {
+      const texture = await Assets.load(path2);
+      assetMap.push(texture);
+      countLoadAsset++;
+      calculatepercetage();
+    }
+    console.log(countLoadAsset);
+  }
+
+  // src/ts/view/Reel.ts
+  var Reel = class extends Container {
+    isSpining = false;
+    spinSpeed = 20;
+    Symbols = [];
+    constructor() {
+      super();
+      this.label = "symContain";
+      this.y = -145.5;
+      this.SetupSym();
+      getBg().getBgCtr().addChild(this);
+    }
+    getReelState() {
+      return this.isSpining;
+    }
+    //create the  Reel container
+    async SetupSym() {
+      await this.loadSymbol();
+      this.symbolsPrePosition();
+      this.reelmask();
+    }
+    //symbol set the array
+    async loadSymbol() {
+      for (let i2 = 0; i2 < assetMap.length; i2++) {
+        const symbol = new Sprite(assetMap[i2]);
+        symbol.label = `sym_${i2}`;
+        symbol.anchor.set(0.5);
+        symbol.width = 180;
+        symbol.height = 180;
+        this.Symbols.push(symbol);
+      }
+      this.ShulleArray(this.Symbols);
+    }
+    ShulleArray(array) {
+      for (let i2 = this.Symbols.length - 1; i2 > 0; i2--) {
+        const random = Math.floor(Math.random() * (i2 + 1));
+        [this.Symbols[i2], array[random]] = [array[random], this.Symbols[i2]];
+      }
+      return array;
+    }
+    symbolsPrePosition() {
+      const totalSymbolsHeight = getBg().getBgSprite().height;
+      const upperExtraSym = this.Symbols[0];
+      upperExtraSym.y = -200;
+      upperExtraSym.width = 180;
+      upperExtraSym.height = 180;
+      this.addChild(upperExtraSym);
+      for (let i2 = 1; i2 < this.Symbols.length - 1; i2++) {
+        let symbols = this.Symbols[i2];
+        symbols.anchor.set(0.5);
+        symbols.y = 200 * (i2 - 1);
+        this.addChild(this.Symbols[i2]);
+        if (symbols.y > getBg().getBgSprite().height) {
+          symbols.alpha = 0;
+          symbols.y -= totalSymbolsHeight;
+        }
+      }
+      const lowerExtraSym = this.Symbols[4];
+      lowerExtraSym.y = 600;
+      lowerExtraSym.width = 180;
+      lowerExtraSym.height = 180;
+      this.addChild(lowerExtraSym);
+    }
+    reelSpin() {
+      const totalSymbolsHeight = getBg().getBgSprite().height;
+      for (let num = 0; num < this.Symbols.length; num++) {
+        let symbols = this.Symbols[num];
+        symbols.alpha = 1;
+        symbols.y += this.spinSpeed;
+        if (symbols.y > totalSymbolsHeight) {
+          symbols.alpha = 0;
+          symbols.y = symbols.y - totalSymbolsHeight - 200;
+          this.addChildAt(symbols, 0);
+        }
+      }
+    }
+    spinboundle = this.reelSpin.bind(this);
+    playReelSpin() {
+      if (this.isSpining) return;
+      this.isSpining = true;
+      Ticker.shared.add(this.spinboundle);
+    }
+    stopReelSpin() {
+      if (!this.isSpining) return;
+      this.isSpining = false;
+      const stopReelAnimation = setInterval(() => {
+        if (this.spinSpeed > 0) {
+          this.spinSpeed -= 2;
+          if (this.spinSpeed < 0) {
+            this.spinSpeed = 0;
+          }
+        }
+        for (let index = 0; index < this.Symbols.length; index++) {
+          const currentY = this.Symbols[index].y;
+          if (currentY == 200 || currentY == 0 || currentY == 400) {
+            clearInterval(stopReelAnimation);
+            Ticker.shared.remove(this.spinboundle);
+            this.spinSpeed = 20;
+            console.log("Reel stopped at:", currentY);
+            break;
+          } else {
+            this.spinSpeed = 20;
+          }
+        }
+        console.log("Speed:", this.spinSpeed);
+      }, 10);
+    }
+    reelmask() {
+      const mask = new Graphics();
+      mask.label = "symbolsMask";
+      mask;
+      mask.rect(
+        -104,
+        -241.5,
+        200,
+        570
+      );
+      mask.fill(16777215);
+      this.mask = mask;
+      getBg().getBgCtr().addChild(mask);
+    }
   };
 
   // src/ts/view/background.ts
@@ -45414,151 +45559,39 @@ ${e2}`);
     }
   };
 
-  // src/ts/view/Reel.ts
-  var Reel2 = class extends Container {
-    background;
-    isSpining = false;
-    spinSpeed = 10;
-    Symbols = [];
-    bg;
-    reelCtr;
-    constructor() {
-      super();
-      this.label = "symContain";
-      this.y = -145.5;
-      this.SetupSym();
+  // src/ts/autio.ts
+  var SoundManager = class {
+    static click = new Audio("assets/reelSymbols/click.mp3");
+    static flip = new Audio("assets/gameAudio/flip-Sound.wav");
+    static match = new Audio("assets/audio/match.mp3");
+    static win = new Audio("assets/gameAudio/wining.mp3");
+    static play(sound) {
+      sound.currentTime = 0;
+      sound.play();
     }
-    getReelState() {
-      return this.isSpining;
-    }
-    //create the  Reel container
-    async SetupSym() {
-      this.background = new background();
-      this.bg = this.background.getBgSprite();
-      console.log(this.bg);
-      this.reelCtr = this.background.getReelCtr();
-      console.log(this.reelCtr);
-      await this.loadSymbol();
-      this.symbolsPrePosition();
-      this.reelmask();
-      this.background.getBgCtr().addChild(this);
-    }
-    addsymbols() {
-      this.background.getBgCtr().addChild(this);
-    }
-    //symbol set the array
-    async loadSymbol() {
-      for (let i2 = 0; i2 < 5; i2++) {
-        let texture;
-        switch (i2) {
-          case 0:
-            texture = await pandaSymboll();
-            break;
-          case 1:
-            texture = await letterSymbol2();
-            break;
-          case 2:
-            texture = await lermpsymbol3();
-            break;
-          case 3:
-            texture = await wildSymbol4();
-            break;
-          case 4:
-            texture = await bambooSymbol5();
-            break;
-        }
-        if (texture) {
-          const symblSprite = new Sprite(texture);
-          symblSprite.label = `sym_${i2}`;
-          symblSprite.anchor.set(0.5);
-          symblSprite.width = 180;
-          symblSprite.height = 180;
-          this.Symbols.push(symblSprite);
-          console.log(this.Symbols);
-        }
-      }
-      this.SulleArray(this.Symbols);
-    }
-    SulleArray(array) {
-      for (let i2 = this.Symbols.length - 1; i2 > 0; i2--) {
-        const random = Math.floor(Math.random() * (i2 + 1));
-        [this.Symbols[i2], array[random]] = [array[random], this.Symbols[i2]];
-      }
-      return array;
-    }
-    symbolsPrePosition() {
-      const totalSymbolsHeight = this.bg;
-      const upperExtraSym = this.Symbols[0];
-      upperExtraSym.y = -200;
-      upperExtraSym.width = 180;
-      upperExtraSym.height = 180;
-      this.addChild(upperExtraSym);
-      for (let i2 = 1; i2 < this.Symbols.length - 1; i2++) {
-        let symbols = this.Symbols[i2];
-        symbols.anchor.set(0.5);
-        symbols.y = 200 * (i2 - 1);
-        this.addChild(this.Symbols[i2]);
-        if (symbols.y > this.bg) {
-          symbols.alpha = 0;
-          symbols.y -= totalSymbolsHeight;
-        }
-      }
-      const lowerExtraSym = this.Symbols[4];
-      lowerExtraSym.y = 600;
-      lowerExtraSym.width = 180;
-      lowerExtraSym.height = 180;
-      this.addChild(lowerExtraSym);
-    }
-    reelSpin() {
-      const totalSymbolsHeight = 800;
-      for (let num = 0; num < this.Symbols.length; num++) {
-        let symbols = this.Symbols[num];
-        symbols.alpha = 1;
-        symbols.y += this.spinSpeed;
-        if (this.children[this.children.length - 1].y > totalSymbolsHeight) {
-          symbols.y = symbols.y - totalSymbolsHeight - 200;
-          this.addChildAt(symbols, 0);
-        }
-      }
-    }
-    spinboundle = this.reelSpin.bind(this);
-    playReelSpin() {
-      if (this.isSpining) return;
-      this.isSpining = true;
-      Ticker.shared.add(this.spinboundle);
-    }
-    stopReelSpin() {
-      if (!this.isSpining) return;
-      this.isSpining = false;
-      Ticker.shared.remove(this.spinboundle);
-    }
-    reelmask() {
-      const mask = new Graphics();
-      mask.label = "symbolsMask";
-      mask;
-      mask.rect(
-        -104,
-        -241.5,
-        200,
-        570
-      );
-      mask.fill(16777215);
-      this.mask = mask;
-      this.reelCtr.addChild(mask);
+    static stop(sound) {
+      sound.pause();
     }
   };
 
   // src/ts/index.ts
   var stage;
+  var bg;
+  var spinBtn;
   (async () => {
     stage = await application();
-    const reel = new Reel2();
-    const spinBtn = document.getElementById(`spineBtn`);
+    new SoundManager();
+    bg = new background();
+    await loadAssets();
+    const reel = new Reel();
+    spinBtn = document.getElementById(`spineBtn`);
     spinBtn.addEventListener(`click`, () => {
       if (!reel.getReelState()) {
+        SoundManager.click;
         spinBtn.innerHTML = "STOP";
         reel.playReelSpin();
       } else {
+        SoundManager.click;
         spinBtn.innerHTML = "SPIN";
         reel.stopReelSpin();
       }
@@ -45566,6 +45599,12 @@ ${e2}`);
   })();
   var getStage = () => {
     return stage;
+  };
+  var getBg = () => {
+    return bg;
+  };
+  var getSpinBtn2 = () => {
+    return spinBtn;
   };
 })();
 /*! Bundled license information:

@@ -13,3 +13,4 @@ export const application = async (): Promise<Container<ContainerChild>> => {
 
     return app.stage;
 }
+
