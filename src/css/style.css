@@ -9,9 +9,9 @@ body {
 
 #loadBackground {
     position: absolute;
-    /* height: 100%; */
-    /* width: 100%; */
-    /* background-image: url("assets/loadbg/loadbg.png"); */
+    height: 100%; 
+     width: 100%;
+     /* background-image: url("assets/loadbg/loadbg.png");  */
 
 }
 
@@ -51,7 +51,7 @@ body {
     flex-direction: column;
     justify-content: center;
     justify-self: center;
-    top: 120px;
+    top: 200px;
 
 }
 
