@@ -12,7 +12,7 @@ export class SoundManager {
     };
 
 
-    
+
     public backgroundSound = new Howl({
         src: [this.audioPaths.background],
         loop: true,
@@ -25,13 +25,13 @@ export class SoundManager {
 
     });
 
-    
+
 
 
     public spinSound = new Howl({
         src: [this.audioPaths.spin],
-                loop: true,
-                volume: 0.8,
+        loop: true,
+        volume: 0.8,
 
     });
 

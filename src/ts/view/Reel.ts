@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite, Ticker } from "pixi.js";
+import { Container, Graphics, Sprite, Ticker, BlurFilter, BlurFilterPass } from "pixi.js";
 import { assetMap } from "../ulity.js";
 import { getBg, getSpinBtn } from "../game.js";
 
@@ -85,6 +85,7 @@ export class Reel extends Container {
             let symbols = this.Symbols[num];
             symbols.alpha = 1;
             symbols.y += this.spinSpeed;
+            // this.blurSymbols(2)
             if (symbols.y > totalSymbolsHeight) {
                 symbols.alpha = 0;
                 symbols.y = symbols.y - totalSymbolsHeight - 200;
@@ -145,4 +146,22 @@ export class Reel extends Container {
         this.mask = mask;
         getBg().getBgCtr().addChild(mask);
     }
+
+
+    private blurSymbols(blurnum?: number) {
+        for (let num = 0; num < this.Symbols.length; num++) {
+            let symbols = this.Symbols[num];
+            symbols.filters = [
+                new BlurFilter({
+                    strength: blurnum
+                })
+            ];
+        }
+
+    }
+
+    public getBlurSymbols(BlurNum:number) {
+        return this.blurSymbols(BlurNum)
+    }
+
 }

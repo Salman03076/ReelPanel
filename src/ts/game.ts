@@ -25,10 +25,13 @@ export async function gameInit(): Promise<void> {
             Sound.spinSound.play()
             spinBtn.innerHTML = "STOP";
             reel.playReelSpin();
+            reel.getBlurSymbols(2)
         } else {
             spinBtn.innerHTML = "SPIN";
             reel.stopReelSpin();
             Sound.spinSound.stop()
+            reel.getBlurSymbols(0)
+
         }
     });
 }

@@ -303,8 +303,8 @@
          * @see {@link Object.getOwnPropertyDescriptors} For details on property copying
          */
         mixin(Target, ...sources2) {
-          for (const source3 of sources2) {
-            Object.defineProperties(Target.prototype, Object.getOwnPropertyDescriptors(source3));
+          for (const source4 of sources2) {
+            Object.defineProperties(Target.prototype, Object.getOwnPropertyDescriptors(source4));
           }
         }
       };
@@ -6302,7 +6302,7 @@ Deprecated since v${version}`;
          * @param {TextureOptions} options - Options for the texture
          */
         constructor({
-          source: source3,
+          source: source4,
           label,
           frame,
           orig,
@@ -6320,7 +6320,7 @@ Deprecated since v${version}`;
           this.dynamic = false;
           this.isTexture = true;
           this.label = label;
-          this.source = source3?.source ?? new TextureSource();
+          this.source = source4?.source ?? new TextureSource();
           this.noFrame = !frame;
           if (frame) {
             this.frame.copyFrom(frame);
@@ -6551,8 +6551,8 @@ Deprecated since v${version}`;
          * @returns A pooled texture with power-of-two backing dimensions at the source resolution.
          */
         getSameSizeTexture(texture, antialias = false) {
-          const source3 = texture.source;
-          return this.getOptimalTexture(texture.width, texture.height, source3._resolution, antialias);
+          const source4 = texture.source;
+          return this.getOptimalTexture(texture.width, texture.height, source4._resolution, antialias);
         }
         /**
          * Returns a texture to the pool so it can be reused by future
@@ -6962,9 +6962,9 @@ Deprecated since v${version}`;
          * @param source - The source of properties and methods to mix in.
          * @deprecated since 8.8.0
          */
-        static mixin(source3) {
+        static mixin(source4) {
           deprecation("8.8.0", "Container.mixin is deprecated, please use extensions.mixin instead.");
-          extensions.mixin(_Container, source3);
+          extensions.mixin(_Container, source4);
         }
         // = 'default';
         /**
@@ -13276,11 +13276,11 @@ Deprecated since v${version}`;
          * @see {@link Texture.from} For texture creation details
          * @see {@link Assets} For asset loading and management
          */
-        static from(source3, skipCache = false) {
-          if (source3 instanceof Texture) {
-            return new _Sprite(source3);
+        static from(source4, skipCache = false) {
+          if (source4 instanceof Texture) {
+            return new _Sprite(source4);
           }
-          return new _Sprite(Texture.from(source3, skipCache));
+          return new _Sprite(Texture.from(source4, skipCache));
         }
         set texture(value) {
           value || (value = Texture.EMPTY);
@@ -13936,25 +13936,25 @@ Deprecated since v${version}`;
           if (this._load) {
             return this._load;
           }
-          const source3 = this.resource;
+          const source4 = this.resource;
           const options = this.options;
-          if ((source3.readyState === source3.HAVE_ENOUGH_DATA || source3.readyState === source3.HAVE_FUTURE_DATA) && source3.width && source3.height) {
-            source3.complete = true;
+          if ((source4.readyState === source4.HAVE_ENOUGH_DATA || source4.readyState === source4.HAVE_FUTURE_DATA) && source4.width && source4.height) {
+            source4.complete = true;
           }
-          source3.addEventListener("play", this._onPlayStart);
-          source3.addEventListener("pause", this._onPlayStop);
-          source3.addEventListener("seeked", this._onSeeked);
+          source4.addEventListener("play", this._onPlayStart);
+          source4.addEventListener("pause", this._onPlayStop);
+          source4.addEventListener("seeked", this._onSeeked);
           if (!this._isSourceReady()) {
             if (!options.preload) {
-              source3.addEventListener("canplay", this._onCanPlay);
+              source4.addEventListener("canplay", this._onCanPlay);
             }
-            source3.addEventListener("canplaythrough", this._onCanPlayThrough);
-            source3.addEventListener("error", this._onError, true);
+            source4.addEventListener("canplaythrough", this._onCanPlayThrough);
+            source4.addEventListener("error", this._onError, true);
           } else {
             this._mediaReady();
           }
           if (!this.isValid) {
-            source3.addEventListener("loadedmetadata", this._onLoadedMetadata);
+            source4.addEventListener("loadedmetadata", this._onLoadedMetadata);
           }
           this.alphaMode = await detectVideoAlphaMode();
           this._load = new Promise((resolve, reject) => {
@@ -13968,7 +13968,7 @@ Deprecated since v${version}`;
                   this._onError(new ErrorEvent(`Preload exceeded timeout of ${options.preloadTimeoutMs}ms`));
                 });
               }
-              source3.load();
+              source4.load();
             }
           });
           return this._load;
@@ -13991,16 +13991,16 @@ Deprecated since v${version}`;
          * @returns True if playing.
          */
         _isSourcePlaying() {
-          const source3 = this.resource;
-          return !source3.paused && !source3.ended;
+          const source4 = this.resource;
+          return !source4.paused && !source4.ended;
         }
         /**
          * Checks if the underlying source is ready for playing.
          * @returns True if ready.
          */
         _isSourceReady() {
-          const source3 = this.resource;
-          return source3.readyState > 2;
+          const source4 = this.resource;
+          return source4.readyState > 2;
         }
         /** Runs the update loop when the video is ready to play. */
         _onPlayStart() {
@@ -14026,13 +14026,13 @@ Deprecated since v${version}`;
           this._mediaReady();
         }
         _onCanPlay() {
-          const source3 = this.resource;
-          source3.removeEventListener("canplay", this._onCanPlay);
+          const source4 = this.resource;
+          source4.removeEventListener("canplay", this._onCanPlay);
           this._mediaReady();
         }
         _onCanPlayThrough() {
-          const source3 = this.resource;
-          source3.removeEventListener("canplaythrough", this._onCanPlayThrough);
+          const source4 = this.resource;
+          source4.removeEventListener("canplaythrough", this._onCanPlayThrough);
           if (this._preloadTimeout) {
             clearTimeout(this._preloadTimeout);
             this._preloadTimeout = void 0;
@@ -14041,10 +14041,10 @@ Deprecated since v${version}`;
         }
         /** Fired when the video is loaded and ready to play. */
         _mediaReady() {
-          const source3 = this.resource;
+          const source4 = this.resource;
           if (this.isValid) {
             this.isReady = true;
-            this.resize(source3.videoWidth, source3.videoHeight);
+            this.resize(source4.videoWidth, source4.videoHeight);
           }
           this._msToNextUpdate = 0;
           this.updateFrame();
@@ -14063,18 +14063,18 @@ Deprecated since v${version}`;
         /** Cleans up resources and event listeners associated with this texture. */
         destroy() {
           this._configureAutoUpdate();
-          const source3 = this.resource;
-          if (source3) {
-            source3.removeEventListener("play", this._onPlayStart);
-            source3.removeEventListener("pause", this._onPlayStop);
-            source3.removeEventListener("seeked", this._onSeeked);
-            source3.removeEventListener("canplay", this._onCanPlay);
-            source3.removeEventListener("canplaythrough", this._onCanPlayThrough);
-            source3.removeEventListener("loadedmetadata", this._onLoadedMetadata);
-            source3.removeEventListener("error", this._onError, true);
-            source3.pause();
-            source3.src = "";
-            source3.load();
+          const source4 = this.resource;
+          if (source4) {
+            source4.removeEventListener("play", this._onPlayStart);
+            source4.removeEventListener("pause", this._onPlayStop);
+            source4.removeEventListener("seeked", this._onSeeked);
+            source4.removeEventListener("canplay", this._onCanPlay);
+            source4.removeEventListener("canplaythrough", this._onCanPlayThrough);
+            source4.removeEventListener("loadedmetadata", this._onLoadedMetadata);
+            source4.removeEventListener("error", this._onError, true);
+            source4.pause();
+            source4.src = "";
+            source4.load();
           }
           super.destroy();
         }
@@ -14420,37 +14420,37 @@ Deprecated since v${version}`;
         _canvasSourceCache: /* @__PURE__ */ new WeakMap(),
         _unpremultipliedCache: /* @__PURE__ */ new WeakMap(),
         getCanvasSource: (texture) => {
-          const source3 = texture.source;
-          const resource = source3?.resource;
+          const source4 = texture.source;
+          const resource = source4?.resource;
           if (!resource) {
             return null;
           }
-          const isPMA = source3.alphaMode === "premultiplied-alpha";
-          const resourceWidth = source3.resourceWidth ?? source3.pixelWidth;
-          const resourceHeight = source3.resourceHeight ?? source3.pixelHeight;
-          const needsResize = resourceWidth !== source3.pixelWidth || resourceHeight !== source3.pixelHeight;
+          const isPMA = source4.alphaMode === "premultiplied-alpha";
+          const resourceWidth = source4.resourceWidth ?? source4.pixelWidth;
+          const resourceHeight = source4.resourceHeight ?? source4.pixelHeight;
+          const needsResize = resourceWidth !== source4.pixelWidth || resourceHeight !== source4.pixelHeight;
           if (isPMA) {
             if (resource instanceof HTMLCanvasElement || typeof OffscreenCanvas !== "undefined" && resource instanceof OffscreenCanvas) {
               if (!needsResize) {
                 return resource;
               }
             }
-            const cached = canvasUtils._unpremultipliedCache.get(source3);
-            if (cached?.resourceId === source3._resourceId) {
+            const cached = canvasUtils._unpremultipliedCache.get(source4);
+            if (cached?.resourceId === source4._resourceId) {
               return cached.canvas;
             }
           }
           if (resource instanceof Uint8Array || resource instanceof Uint8ClampedArray || resource instanceof Int8Array || resource instanceof Uint16Array || resource instanceof Int16Array || resource instanceof Uint32Array || resource instanceof Int32Array || resource instanceof Float32Array || resource instanceof ArrayBuffer) {
-            const cached = canvasUtils._canvasSourceCache.get(source3);
-            if (cached?.resourceId === source3._resourceId) {
+            const cached = canvasUtils._canvasSourceCache.get(source4);
+            if (cached?.resourceId === source4._resourceId) {
               return cached.canvas;
             }
-            const canvas = DOMAdapter.get().createCanvas(source3.pixelWidth, source3.pixelHeight);
+            const canvas = DOMAdapter.get().createCanvas(source4.pixelWidth, source4.pixelHeight);
             const context2 = canvas.getContext("2d");
-            const imageData = context2.createImageData(source3.pixelWidth, source3.pixelHeight);
+            const imageData = context2.createImageData(source4.pixelWidth, source4.pixelHeight);
             const data = imageData.data;
             const bytes = resource instanceof ArrayBuffer ? new Uint8Array(resource) : new Uint8Array(resource.buffer, resource.byteOffset, resource.byteLength);
-            if (source3.format === "bgra8unorm") {
+            if (source4.format === "bgra8unorm") {
               for (let i2 = 0; i2 < data.length && i2 + 3 < bytes.length; i2 += 4) {
                 data[i2] = bytes[i2 + 2];
                 data[i2 + 1] = bytes[i2 + 1];
@@ -14461,14 +14461,14 @@ Deprecated since v${version}`;
               data.set(bytes.subarray(0, data.length));
             }
             context2.putImageData(imageData, 0, 0);
-            canvasUtils._canvasSourceCache.set(source3, { canvas, resourceId: source3._resourceId });
+            canvasUtils._canvasSourceCache.set(source4, { canvas, resourceId: source4._resourceId });
             return canvas;
           }
           if (isPMA) {
-            const canvas = DOMAdapter.get().createCanvas(source3.pixelWidth, source3.pixelHeight);
+            const canvas = DOMAdapter.get().createCanvas(source4.pixelWidth, source4.pixelHeight);
             const context2 = canvas.getContext("2d", { willReadFrequently: true });
-            canvas.width = source3.pixelWidth;
-            canvas.height = source3.pixelHeight;
+            canvas.width = source4.pixelWidth;
+            canvas.height = source4.pixelHeight;
             context2.drawImage(resource, 0, 0);
             const imageData = context2.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
@@ -14482,20 +14482,20 @@ Deprecated since v${version}`;
               }
             }
             context2.putImageData(imageData, 0, 0);
-            canvasUtils._unpremultipliedCache.set(source3, { canvas, resourceId: source3._resourceId });
+            canvasUtils._unpremultipliedCache.set(source4, { canvas, resourceId: source4._resourceId });
             return canvas;
           }
           if (needsResize) {
-            const cached = canvasUtils._canvasSourceCache.get(source3);
-            if (cached?.resourceId === source3._resourceId) {
+            const cached = canvasUtils._canvasSourceCache.get(source4);
+            if (cached?.resourceId === source4._resourceId) {
               return cached.canvas;
             }
-            const canvas = DOMAdapter.get().createCanvas(source3.pixelWidth, source3.pixelHeight);
+            const canvas = DOMAdapter.get().createCanvas(source4.pixelWidth, source4.pixelHeight);
             const context2 = canvas.getContext("2d");
-            canvas.width = source3.pixelWidth;
-            canvas.height = source3.pixelHeight;
+            canvas.width = source4.pixelWidth;
+            canvas.height = source4.pixelHeight;
             context2.drawImage(resource, 0, 0);
-            canvasUtils._canvasSourceCache.set(source3, { canvas, resourceId: source3._resourceId });
+            canvasUtils._canvasSourceCache.set(source4, { canvas, resourceId: source4._resourceId });
             return canvas;
           }
           return resource;
@@ -14579,8 +14579,8 @@ Deprecated since v${version}`;
           context2.fillStyle = Color.shared.setValue(color).toHex();
           context2.fillRect(0, 0, outWidth, outHeight);
           context2.globalCompositeOperation = "multiply";
-          const source3 = canvasUtils.getCanvasSource(texture);
-          if (!source3) {
+          const source4 = canvasUtils.getCanvasSource(texture);
+          if (!source4) {
             context2.restore();
             return;
           }
@@ -14588,7 +14588,7 @@ Deprecated since v${version}`;
             canvasUtils._applyInverseRotation(context2, rotate, crop.width, crop.height);
           }
           context2.drawImage(
-            source3,
+            source4,
             crop.x,
             crop.y,
             crop.width,
@@ -14600,7 +14600,7 @@ Deprecated since v${version}`;
           );
           context2.globalCompositeOperation = "destination-atop";
           context2.drawImage(
-            source3,
+            source4,
             crop.x,
             crop.y,
             crop.width,
@@ -14631,8 +14631,8 @@ Deprecated since v${version}`;
           context2.fillStyle = Color.shared.setValue(color).toHex();
           context2.fillRect(0, 0, outWidth, outHeight);
           context2.globalCompositeOperation = "destination-atop";
-          const source3 = canvasUtils.getCanvasSource(texture);
-          if (!source3) {
+          const source4 = canvasUtils.getCanvasSource(texture);
+          if (!source4) {
             context2.restore();
             return;
           }
@@ -14640,7 +14640,7 @@ Deprecated since v${version}`;
             canvasUtils._applyInverseRotation(context2, rotate, crop.width, crop.height);
           }
           context2.drawImage(
-            source3,
+            source4,
             crop.x,
             crop.y,
             crop.width,
@@ -14668,8 +14668,8 @@ Deprecated since v${version}`;
           canvas.height = Math.ceil(outHeight);
           context2.save();
           context2.globalCompositeOperation = "copy";
-          const source3 = canvasUtils.getCanvasSource(texture);
-          if (!source3) {
+          const source4 = canvasUtils.getCanvasSource(texture);
+          if (!source4) {
             context2.restore();
             return;
           }
@@ -14677,7 +14677,7 @@ Deprecated since v${version}`;
             canvasUtils._applyInverseRotation(context2, rotate, crop.width, crop.height);
           }
           context2.drawImage(
-            source3,
+            source4,
             crop.x,
             crop.y,
             crop.width,
@@ -16025,8 +16025,8 @@ Deprecated since v${version}`;
           if (cssFilters.length === 0 && alphaMultiplier === 1) {
             return texture;
           }
-          const source3 = canvasUtils.getCanvasSource(texture);
-          if (!source3) {
+          const source4 = canvasUtils.getCanvasSource(texture);
+          if (!source4) {
             return texture;
           }
           const frame = texture.frame;
@@ -16048,7 +16048,7 @@ Deprecated since v${version}`;
           const sw = width * resolution;
           const sh = height * resolution;
           context2.drawImage(
-            source3,
+            source4,
             sx,
             sy,
             sw,
@@ -16484,12 +16484,12 @@ ${src}`;
     }
     LOCATION_REGEX.lastIndex = 0;
   }
-  function stripComments(source3) {
-    return source3.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+  function stripComments(source4) {
+    return source4.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
   }
-  function extractAttributesFromGpuProgram({ source: source3, entryPoint }) {
+  function extractAttributesFromGpuProgram({ source: source4, entryPoint }) {
     const results = {};
-    const cleanSource = stripComments(source3);
+    const cleanSource = stripComments(source4);
     const mainVertStart = cleanSource.indexOf(`fn ${entryPoint}(`);
     if (mainVertStart === -1) {
       return results;
@@ -19994,7 +19994,7 @@ ${parts.join("\n")}
 
   // node_modules/pixi.js/lib/rendering/high-shader/compileHighShaderToProgram.mjs
   function compileHighShaderGpuProgram({ bits, name }) {
-    const source3 = compileHighShader({
+    const source4 = compileHighShader({
       template: {
         fragment: fragmentGPUTemplate,
         vertex: vertexGPUTemplate
@@ -20007,11 +20007,11 @@ ${parts.join("\n")}
     return GpuProgram.from({
       name,
       vertex: {
-        source: source3.vertex,
+        source: source4.vertex,
         entryPoint: "main"
       },
       fragment: {
-        source: source3.fragment,
+        source: source4.fragment,
         entryPoint: "main"
       }
     });
@@ -21648,11 +21648,11 @@ ${parts.join("\n")}
             const element = elements[i2];
             elements[i2] = null;
             const texture = element.texture;
-            const source3 = texture._source;
-            const adjustedBlendMode = getAdjustedBlendModeBlend(element.blendMode, source3);
+            const source4 = texture._source;
+            const adjustedBlendMode = getAdjustedBlendModeBlend(element.blendMode, source4);
             const breakRequired = blendMode !== adjustedBlendMode || topology !== element.topology;
-            if (source3._batchTick === BATCH_TICK && !breakRequired) {
-              element._textureId = source3._textureBindLocation;
+            if (source4._batchTick === BATCH_TICK && !breakRequired) {
+              element._textureId = source4._textureBindLocation;
               size += element.indexSize;
               if (element.packAsQuad) {
                 this.packQuadAttributes(
@@ -21686,7 +21686,7 @@ ${parts.join("\n")}
               batchElements.push(element);
               continue;
             }
-            source3._batchTick = BATCH_TICK;
+            source4._batchTick = BATCH_TICK;
             if (textureBatch.count >= maxTextures || breakRequired) {
               this._finishBatch(
                 batch,
@@ -21709,9 +21709,9 @@ ${parts.join("\n")}
               batchElements = [];
               ++BATCH_TICK;
             }
-            element._textureId = source3._textureBindLocation = textureBatch.count;
-            textureBatch.ids[source3.uid] = textureBatch.count;
-            textureBatch.textures[textureBatch.count++] = source3;
+            element._textureId = source4._textureBindLocation = textureBatch.count;
+            textureBatch.ids[source4.uid] = textureBatch.count;
+            textureBatch.textures[textureBatch.count++] = source4;
             element._batch = batch;
             batchElements.push(element);
             size += element.indexSize;
@@ -24407,8 +24407,8 @@ ${parts.join("\n")}
         get colorTexture() {
           return this.colorTextures[0];
         }
-        onSourceResize(source3) {
-          this.resize(source3.width, source3.height, source3._resolution, true);
+        onSourceResize(source4) {
+          this.resize(source4.width, source4.height, source4._resolution, true);
         }
         /**
          * This will ensure a depthStencil texture is created for this render target.
@@ -26441,9 +26441,9 @@ ${parts.join("\n")}
             gpuRenderTarget.width = renderTarget.pixelWidth;
             gpuRenderTarget.height = renderTarget.pixelHeight;
           }
-          const source3 = renderTarget.colorTexture;
+          const source4 = renderTarget.colorTexture;
           const viewport = this.viewport;
-          const arrayLayerCount = source3.arrayLayerCount || 1;
+          const arrayLayerCount = source4.arrayLayerCount || 1;
           if ((layer | 0) !== layer) {
             layer |= 0;
           }
@@ -26452,13 +26452,13 @@ ${parts.join("\n")}
           }
           this.mipLevel = mipLevel | 0;
           this.layer = layer | 0;
-          const pixelWidth = Math.max(source3.pixelWidth >> mipLevel, 1);
-          const pixelHeight = Math.max(source3.pixelHeight >> mipLevel, 1);
+          const pixelWidth = Math.max(source4.pixelWidth >> mipLevel, 1);
+          const pixelHeight = Math.max(source4.pixelHeight >> mipLevel, 1);
           if (!frame && renderSurface instanceof Texture) {
             frame = renderSurface.frame;
           }
           if (frame) {
-            const resolution = source3._resolution;
+            const resolution = source4._resolution;
             const scale = 1 << Math.max(mipLevel | 0, 0);
             const baseX = frame.x * resolution + 0.5 | 0;
             const baseY = frame.y * resolution + 0.5 | 0;
@@ -26486,8 +26486,8 @@ ${parts.join("\n")}
             this.projectionMatrix,
             0,
             0,
-            viewport.width / source3.resolution,
-            viewport.height / source3.resolution,
+            viewport.width / source4.resolution,
+            viewport.height / source4.resolution,
             !renderTarget.isRoot
           );
           this.adaptor.startRenderPass(renderTarget, clear, clearColor, viewport, mipLevel, layer);
@@ -27203,21 +27203,21 @@ ${parts.join("\n")}
       "use strict";
       gpuUploadBufferImageResource = {
         type: "image",
-        upload(source3, gpuTexture, gpu, originZOverride = 0) {
-          const resource = source3.resource;
-          const total = (source3.pixelWidth | 0) * (source3.pixelHeight | 0);
+        upload(source4, gpuTexture, gpu, originZOverride = 0) {
+          const resource = source4.resource;
+          const total = (source4.pixelWidth | 0) * (source4.pixelHeight | 0);
           const bytesPerPixel = resource.byteLength / total;
           gpu.device.queue.writeTexture(
             { texture: gpuTexture, origin: { x: 0, y: 0, z: originZOverride } },
             resource,
             {
               offset: 0,
-              rowsPerImage: source3.pixelHeight,
-              bytesPerRow: source3.pixelWidth * bytesPerPixel
+              rowsPerImage: source4.pixelHeight,
+              bytesPerRow: source4.pixelWidth * bytesPerPixel
             },
             {
-              width: source3.pixelWidth,
-              height: source3.pixelHeight,
+              width: source4.pixelWidth,
+              height: source4.pixelHeight,
               depthOrArrayLayers: 1
             }
           );
@@ -27243,12 +27243,12 @@ ${parts.join("\n")}
       defaultBlockData = { blockBytes: 4, blockWidth: 1, blockHeight: 1 };
       gpuUploadCompressedTextureResource = {
         type: "compressed",
-        upload(source3, gpuTexture, gpu, originZOverride = 0) {
-          let mipWidth = source3.pixelWidth;
-          let mipHeight = source3.pixelHeight;
-          const blockData = blockDataMap[source3.format] || defaultBlockData;
-          for (let i2 = 0; i2 < source3.resource.length; i2++) {
-            const levelBuffer = source3.resource[i2];
+        upload(source4, gpuTexture, gpu, originZOverride = 0) {
+          let mipWidth = source4.pixelWidth;
+          let mipHeight = source4.pixelHeight;
+          const blockData = blockDataMap[source4.format] || defaultBlockData;
+          for (let i2 = 0; i2 < source4.resource.length; i2++) {
+            const levelBuffer = source4.resource[i2];
             const bytesPerRow = Math.ceil(mipWidth / blockData.blockWidth) * blockData.blockBytes;
             gpu.device.queue.writeTexture(
               {
@@ -27279,8 +27279,8 @@ ${parts.join("\n")}
   function createGpuUploadCubeTextureResource(uploaders) {
     return {
       type: "cube",
-      upload(source3, gpuTexture, gpu) {
-        const faces = source3.faces;
+      upload(source4, gpuTexture, gpu) {
+        const faces = source4.faces;
         for (let i2 = 0; i2 < FACE_ORDER.length; i2++) {
           const key = FACE_ORDER[i2];
           const face = faces[key];
@@ -27306,19 +27306,19 @@ ${parts.join("\n")}
       init_warn();
       gpuUploadImageResource = {
         type: "image",
-        upload(source3, gpuTexture, gpu, originZOverride = 0) {
-          const resource = source3.resource;
+        upload(source4, gpuTexture, gpu, originZOverride = 0) {
+          const resource = source4.resource;
           if (!resource) return;
           if (globalThis.HTMLImageElement && resource instanceof HTMLImageElement) {
             const canvas = DOMAdapter.get().createCanvas(resource.width, resource.height);
             const context2 = canvas.getContext("2d");
             context2.drawImage(resource, 0, 0, resource.width, resource.height);
-            source3.resource = canvas;
+            source4.resource = canvas;
             warn("ImageSource: Image element passed, converting to canvas and replacing resource.");
           }
-          const width = Math.min(gpuTexture.width, source3.resourceWidth || source3.pixelWidth);
-          const height = Math.min(gpuTexture.height, source3.resourceHeight || source3.pixelHeight);
-          const premultipliedAlpha = source3.alphaMode === "premultiply-alpha-on-upload";
+          const width = Math.min(gpuTexture.width, source4.resourceWidth || source4.pixelWidth);
+          const height = Math.min(gpuTexture.height, source4.resourceHeight || source4.pixelHeight);
+          const premultipliedAlpha = source4.alphaMode === "premultiply-alpha-on-upload";
           gpu.device.queue.copyExternalImageToTexture(
             { source: resource },
             { texture: gpuTexture, origin: { x: 0, y: 0, z: originZOverride }, premultipliedAlpha },
@@ -27339,8 +27339,8 @@ ${parts.join("\n")}
       init_gpuUploadImageSource();
       gpuUploadVideoResource = {
         type: "video",
-        upload(source3, gpuTexture, gpu, originZOverride) {
-          gpuUploadImageResource.upload(source3, gpuTexture, gpu, originZOverride);
+        upload(source4, gpuTexture, gpu, originZOverride) {
+          gpuUploadImageResource.upload(source4, gpuTexture, gpu, originZOverride);
         }
       };
     }
@@ -27572,83 +27572,83 @@ ${parts.join("\n")}
          * @param source - The texture source to initialize.
          * @returns The initialized texture source.
          */
-        initSource(source3) {
-          return source3._gpuData[this._renderer.uid]?.gpuTexture || this._initSource(source3);
+        initSource(source4) {
+          return source4._gpuData[this._renderer.uid]?.gpuTexture || this._initSource(source4);
         }
-        _initSource(source3) {
-          if (source3.autoGenerateMipmaps) {
-            const biggestDimension = Math.max(source3.pixelWidth, source3.pixelHeight);
-            source3.mipLevelCount = Math.floor(Math.log2(biggestDimension)) + 1;
+        _initSource(source4) {
+          if (source4.autoGenerateMipmaps) {
+            const biggestDimension = Math.max(source4.pixelWidth, source4.pixelHeight);
+            source4.mipLevelCount = Math.floor(Math.log2(biggestDimension)) + 1;
           }
           let usage;
-          if (source3.sampleCount > 1) {
+          if (source4.sampleCount > 1) {
             usage = GPUTextureUsage.RENDER_ATTACHMENT;
-            if (source3.transient && this._renderer.device.extensions.transientAttachment) {
+            if (source4.transient && this._renderer.device.extensions.transientAttachment) {
               usage |= GPUTextureUsage.TRANSIENT_ATTACHMENT;
             }
           } else {
             usage = GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST;
-            if (source3.uploadMethodId !== "compressed") {
+            if (source4.uploadMethodId !== "compressed") {
               usage |= GPUTextureUsage.RENDER_ATTACHMENT;
               usage |= GPUTextureUsage.COPY_SRC;
             }
           }
-          const blockData = blockDataMap[source3.format] || { blockBytes: 4, blockWidth: 1, blockHeight: 1 };
-          const width = Math.ceil(source3.pixelWidth / blockData.blockWidth) * blockData.blockWidth;
-          const height = Math.ceil(source3.pixelHeight / blockData.blockHeight) * blockData.blockHeight;
+          const blockData = blockDataMap[source4.format] || { blockBytes: 4, blockWidth: 1, blockHeight: 1 };
+          const width = Math.ceil(source4.pixelWidth / blockData.blockWidth) * blockData.blockWidth;
+          const height = Math.ceil(source4.pixelHeight / blockData.blockHeight) * blockData.blockHeight;
           const textureDescriptor = {
-            label: source3.label,
-            size: { width, height, depthOrArrayLayers: source3.arrayLayerCount },
-            format: source3.format,
-            sampleCount: source3.sampleCount,
-            mipLevelCount: source3.mipLevelCount,
-            dimension: source3.dimension,
+            label: source4.label,
+            size: { width, height, depthOrArrayLayers: source4.arrayLayerCount },
+            format: source4.format,
+            sampleCount: source4.sampleCount,
+            mipLevelCount: source4.mipLevelCount,
+            dimension: source4.dimension,
             usage
           };
           const gpuTexture = this._gpu.device.createTexture(textureDescriptor);
-          source3._gpuData[this._renderer.uid] = new GPUTextureGpuData(gpuTexture);
-          const added = this._managedTextures.add(source3);
+          source4._gpuData[this._renderer.uid] = new GPUTextureGpuData(gpuTexture);
+          const added = this._managedTextures.add(source4);
           if (added) {
-            source3.on("update", this.onSourceUpdate, this);
-            source3.on("resize", this.onSourceResize, this);
-            source3.on("updateMipmaps", this.onUpdateMipmaps, this);
+            source4.on("update", this.onSourceUpdate, this);
+            source4.on("resize", this.onSourceResize, this);
+            source4.on("updateMipmaps", this.onUpdateMipmaps, this);
           }
-          this.onSourceUpdate(source3);
+          this.onSourceUpdate(source4);
           return gpuTexture;
         }
-        onSourceUpdate(source3) {
-          const gpuTexture = this.getGpuSource(source3);
+        onSourceUpdate(source4) {
+          const gpuTexture = this.getGpuSource(source4);
           if (!gpuTexture) return;
-          if (this._uploads[source3.uploadMethodId]) {
-            this._uploads[source3.uploadMethodId].upload(source3, gpuTexture, this._gpu);
+          if (this._uploads[source4.uploadMethodId]) {
+            this._uploads[source4.uploadMethodId].upload(source4, gpuTexture, this._gpu);
           }
-          if (source3.autoGenerateMipmaps && source3.mipLevelCount > 1) {
-            this.onUpdateMipmaps(source3);
+          if (source4.autoGenerateMipmaps && source4.mipLevelCount > 1) {
+            this.onUpdateMipmaps(source4);
           }
         }
-        onUpdateMipmaps(source3) {
+        onUpdateMipmaps(source4) {
           if (!this._mipmapGenerator) {
             this._mipmapGenerator = new GpuMipmapGenerator(this._gpu.device);
           }
-          const gpuTexture = this.getGpuSource(source3);
+          const gpuTexture = this.getGpuSource(source4);
           this._mipmapGenerator.generateMipmap(gpuTexture);
         }
-        onSourceUnload(source3) {
-          source3.off("update", this.onSourceUpdate, this);
-          source3.off("resize", this.onSourceResize, this);
-          source3.off("updateMipmaps", this.onUpdateMipmaps, this);
+        onSourceUnload(source4) {
+          source4.off("update", this.onSourceUpdate, this);
+          source4.off("resize", this.onSourceResize, this);
+          source4.off("updateMipmaps", this.onUpdateMipmaps, this);
         }
-        onSourceResize(source3) {
-          source3._gcLastUsed = this._renderer.gc.now;
-          const gpuData = source3._gpuData[this._renderer.uid];
+        onSourceResize(source4) {
+          source4._gcLastUsed = this._renderer.gc.now;
+          const gpuData = source4._gpuData[this._renderer.uid];
           const gpuTexture = gpuData?.gpuTexture;
           if (!gpuTexture) {
-            this.initSource(source3);
-          } else if (gpuTexture.width !== source3.pixelWidth || gpuTexture.height !== source3.pixelHeight) {
+            this.initSource(source4);
+          } else if (gpuTexture.width !== source4.pixelWidth || gpuTexture.height !== source4.pixelHeight) {
             gpuData.destroy();
-            this._bindGroupHash[source3.uid] = null;
-            source3._gpuData[this._renderer.uid] = null;
-            this.initSource(source3);
+            this._bindGroupHash[source4.uid] = null;
+            source4._gpuData[this._renderer.uid] = null;
+            this.initSource(source4);
           }
         }
         _initSampler(sampler) {
@@ -27658,9 +27658,9 @@ ${parts.join("\n")}
         getGpuSampler(sampler) {
           return this._gpuSamplers[sampler._resourceId] || this._initSampler(sampler);
         }
-        getGpuSource(source3) {
-          source3._gcLastUsed = this._renderer.gc.now;
-          return source3._gpuData[this._renderer.uid]?.gpuTexture || this.initSource(source3);
+        getGpuSource(source4) {
+          source4._gcLastUsed = this._renderer.gc.now;
+          return source4._gpuData[this._renderer.uid]?.gpuTexture || this.initSource(source4);
         }
         /**
          * this returns s bind group for a specific texture, the bind group contains
@@ -27675,10 +27675,10 @@ ${parts.join("\n")}
           return this._bindGroupHash[texture.uid] || this._createTextureBindGroup(texture);
         }
         _createTextureBindGroup(texture) {
-          const source3 = texture.source;
+          const source4 = texture.source;
           this._bindGroupHash[texture.uid] = new BindGroup({
-            0: source3,
-            1: source3.style,
+            0: source4,
+            1: source4.style,
             2: new UniformGroup({
               uTextureMatrix: { type: "mat3x3<f32>", value: texture.textureMatrix.mapCoord }
             })
@@ -27686,14 +27686,14 @@ ${parts.join("\n")}
           return this._bindGroupHash[texture.uid];
         }
         getTextureView(texture) {
-          const source3 = texture.source;
-          source3._gcLastUsed = this._renderer.gc.now;
-          let gpuData = source3._gpuData[this._renderer.uid];
+          const source4 = texture.source;
+          source4._gcLastUsed = this._renderer.gc.now;
+          let gpuData = source4._gpuData[this._renderer.uid];
           if (!gpuData) {
-            this.initSource(source3);
-            gpuData = source3._gpuData[this._renderer.uid];
+            this.initSource(source4);
+            gpuData = source4._gpuData[this._renderer.uid];
           }
-          gpuData.textureView || (gpuData.textureView = gpuData.gpuTexture.createView({ dimension: source3.viewDimension }));
+          gpuData.textureView || (gpuData.textureView = gpuData.gpuTexture.createView({ dimension: source4.viewDimension }));
           return gpuData.textureView;
         }
         generateCanvas(texture) {
@@ -27946,9 +27946,9 @@ ${parts.join("\n")}
           if (!shader) {
             shader = this._shader;
             const texture = mesh.texture;
-            const source3 = texture.source;
-            shader.resources.uTexture = source3;
-            shader.resources.uSampler = source3.style;
+            const source4 = texture.source;
+            shader.resources.uTexture = source4;
+            shader.resources.uSampler = source4.style;
             shader.resources.textureUniforms.uniforms.uTextureMatrix = texture.textureMatrix.mapCoord;
           } else if (!shader.glProgram) {
             warn("Mesh shader has no glProgram", mesh.shader);
@@ -29469,7 +29469,7 @@ ${parts.join("\n")}
         }
         startRenderPass(renderTarget, clear = true, clearColor, viewport, mipLevel = 0, layer = 0) {
           const renderTargetSystem = this._renderTargetSystem;
-          const source3 = renderTarget.colorTexture;
+          const source4 = renderTarget.colorTexture;
           const gpuRenderTarget = renderTargetSystem.getGpuRenderTarget(renderTarget);
           if (layer !== 0 && this._renderer.context.webGLVersion < 2) {
             throw new Error("[RenderTargetSystem] Rendering to array layers requires WebGL2.");
@@ -29484,7 +29484,7 @@ ${parts.join("\n")}
           }
           let viewPortY = viewport.y;
           if (renderTarget.isRoot) {
-            viewPortY = source3.pixelHeight - viewport.height - viewport.y;
+            viewPortY = source4.pixelHeight - viewport.height - viewport.y;
           }
           renderTarget.colorTextures.forEach((texture) => {
             this._renderer.texture.unbind(texture);
@@ -29654,16 +29654,16 @@ ${parts.join("\n")}
           glRenderTarget.height = renderTarget.colorTexture.source.pixelHeight;
           const colorTextures = renderTarget.colorTextures;
           colorTextures.forEach((colorTexture, i2) => {
-            const source3 = colorTexture.source;
-            if (source3.antialias) {
+            const source4 = colorTexture.source;
+            if (source4.antialias) {
               if (renderer.context.supports.msaa) {
                 glRenderTarget.msaa = true;
               } else {
                 warn("[RenderTexture] Antialiasing on textures is not supported in WebGL1");
               }
             }
-            renderer.texture.bindSource(source3, 0);
-            const glSource = renderer.texture.getGlSource(source3);
+            renderer.texture.bindSource(source4, 0);
+            const glSource = renderer.texture.getGlSource(source4);
             const glTexture = glSource.texture;
             if (glSource.target === gl.TEXTURE_2D) {
               gl.framebufferTexture2D(
@@ -29710,14 +29710,14 @@ ${parts.join("\n")}
           this._resizeColor(renderTarget, glRenderTarget);
         }
         _resizeColor(renderTarget, glRenderTarget) {
-          const source3 = renderTarget.colorTexture.source;
-          glRenderTarget.width = source3.pixelWidth;
-          glRenderTarget.height = source3.pixelHeight;
+          const source4 = renderTarget.colorTexture.source;
+          glRenderTarget.width = source4.pixelWidth;
+          glRenderTarget.height = source4.pixelHeight;
           glRenderTarget._attachedMipLevel = 0;
           glRenderTarget._attachedLayer = 0;
           renderTarget.colorTextures.forEach((colorTexture, i2) => {
             if (i2 === 0) return;
-            colorTexture.source.resize(source3.width, source3.height, source3._resolution);
+            colorTexture.source.resize(source4.width, source4.height, source4._resolution);
           });
           if (glRenderTarget.msaa) {
             const renderer = this._renderer;
@@ -31019,35 +31019,35 @@ ${parts.join("\n")}
       "use strict";
       glUploadBufferImageResource = {
         id: "buffer",
-        upload(source3, glTexture, gl, _webGLVersion, targetOverride, forceAllocation = false) {
+        upload(source4, glTexture, gl, _webGLVersion, targetOverride, forceAllocation = false) {
           const target = targetOverride || glTexture.target;
-          if (!forceAllocation && (glTexture.width === source3.width && glTexture.height === source3.height)) {
+          if (!forceAllocation && (glTexture.width === source4.width && glTexture.height === source4.height)) {
             gl.texSubImage2D(
               target,
               0,
               0,
               0,
-              source3.width,
-              source3.height,
+              source4.width,
+              source4.height,
               glTexture.format,
               glTexture.type,
-              source3.resource
+              source4.resource
             );
           } else {
             gl.texImage2D(
               target,
               0,
               glTexture.internalFormat,
-              source3.width,
-              source3.height,
+              source4.width,
+              source4.height,
               0,
               glTexture.format,
               glTexture.type,
-              source3.resource
+              source4.resource
             );
           }
-          glTexture.width = source3.width;
-          glTexture.height = source3.height;
+          glTexture.width = source4.width;
+          glTexture.height = source4.height;
         }
       };
     }
@@ -31118,14 +31118,14 @@ ${parts.join("\n")}
       };
       glUploadCompressedTextureResource = {
         id: "compressed",
-        upload(source3, glTexture, gl, _webGLVersion, targetOverride, _forceAllocation) {
+        upload(source4, glTexture, gl, _webGLVersion, targetOverride, _forceAllocation) {
           const target = targetOverride ?? glTexture.target;
           gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
-          let mipWidth = source3.pixelWidth;
-          let mipHeight = source3.pixelHeight;
-          const compressed = !!compressedFormatMap[source3.format];
-          for (let i2 = 0; i2 < source3.resource.length; i2++) {
-            const levelBuffer = source3.resource[i2];
+          let mipWidth = source4.pixelWidth;
+          let mipHeight = source4.pixelHeight;
+          const compressed = !!compressedFormatMap[source4.format];
+          for (let i2 = 0; i2 < source4.resource.length; i2++) {
+            const levelBuffer = source4.resource[i2];
             if (compressed) {
               gl.compressedTexImage2D(
                 target,
@@ -31161,8 +31161,8 @@ ${parts.join("\n")}
   function createGlUploadCubeTextureResource(uploaders) {
     return {
       id: "cube",
-      upload(source3, glTexture, gl, webGLVersion) {
-        const faces = source3.faces;
+      upload(source4, glTexture, gl, webGLVersion) {
+        const faces = source4.faces;
         for (let faceIndex = 0; faceIndex < FACE_ORDER2.length; faceIndex++) {
           const key = FACE_ORDER2[faceIndex];
           const face = faces[key];
@@ -31180,8 +31180,8 @@ ${parts.join("\n")}
           );
           glTexture._layerInitMask |= 1 << faceIndex;
         }
-        glTexture.width = source3.pixelWidth;
-        glTexture.height = source3.pixelHeight;
+        glTexture.width = source4.pixelWidth;
+        glTexture.height = source4.pixelHeight;
       }
     };
   }
@@ -31299,16 +31299,16 @@ ${parts.join("\n")}
       "use strict";
       glUploadImageResource = {
         id: "image",
-        upload(source3, glTexture, gl, webGLVersion, targetOverride, forceAllocation = false) {
+        upload(source4, glTexture, gl, webGLVersion, targetOverride, forceAllocation = false) {
           const target = targetOverride || glTexture.target;
-          const textureWidth = source3.pixelWidth;
-          const textureHeight = source3.pixelHeight;
-          const resourceWidth = source3.resourceWidth;
-          const resourceHeight = source3.resourceHeight;
+          const textureWidth = source4.pixelWidth;
+          const textureHeight = source4.pixelHeight;
+          const resourceWidth = source4.resourceWidth;
+          const resourceHeight = source4.resourceHeight;
           const isWebGL2 = webGLVersion === 2;
           const needsAllocation = forceAllocation || glTexture.width !== textureWidth || glTexture.height !== textureHeight;
           const resourceFitsTexture = resourceWidth >= textureWidth && resourceHeight >= textureHeight;
-          const resource = source3.resource;
+          const resource = source4.resource;
           const uploadFunction = isWebGL2 ? uploadImageWebGL2 : uploadImageWebGL1;
           uploadFunction(
             gl,
@@ -31349,8 +31349,8 @@ ${parts.join("\n")}
       defaultForceAllocation = isSafari();
       glUploadVideoResource = {
         id: "video",
-        upload(source3, glTexture, gl, webGLVersion, targetOverride, forceAllocation = defaultForceAllocation) {
-          if (!source3.isValid) {
+        upload(source4, glTexture, gl, webGLVersion, targetOverride, forceAllocation = defaultForceAllocation) {
+          if (!source4.isValid) {
             const target = targetOverride ?? glTexture.target;
             gl.texImage2D(
               target,
@@ -31365,7 +31365,7 @@ ${parts.join("\n")}
             );
             return;
           }
-          glUploadImageResource.upload(source3, glTexture, gl, webGLVersion, targetOverride, forceAllocation);
+          glUploadImageResource.upload(source4, glTexture, gl, webGLVersion, targetOverride, forceAllocation);
         }
       };
     }
@@ -31794,15 +31794,15 @@ ${parts.join("\n")}
          * @param source - The texture source to initialize.
          * @returns The initialized texture source.
          */
-        initSource(source3) {
-          this.bind(source3);
+        initSource(source4) {
+          this.bind(source4);
         }
         bind(texture, location = 0) {
-          const source3 = texture.source;
+          const source4 = texture.source;
           if (texture) {
-            this.bindSource(source3, location);
+            this.bindSource(source4, location);
             if (this._useSeparateSamplers) {
-              this._bindSampler(source3.style, location);
+              this._bindSampler(source4.style, location);
             }
           } else {
             this.bindSource(null, location);
@@ -31811,14 +31811,14 @@ ${parts.join("\n")}
             }
           }
         }
-        bindSource(source3, location = 0) {
+        bindSource(source4, location = 0) {
           const gl = this._gl;
-          source3._gcLastUsed = this._renderer.gc.now;
-          if (this._boundTextures[location] !== source3) {
-            this._boundTextures[location] = source3;
+          source4._gcLastUsed = this._renderer.gc.now;
+          if (this._boundTextures[location] !== source4) {
+            this._boundTextures[location] = source4;
             this._activateLocation(location);
-            source3 || (source3 = Texture.EMPTY.source);
-            const glTexture = this.getGlSource(source3);
+            source4 || (source4 = Texture.EMPTY.source);
+            const glTexture = this.getGlSource(source4);
             gl.bindTexture(glTexture.target, glTexture.texture);
           }
         }
@@ -31836,13 +31836,13 @@ ${parts.join("\n")}
           }
         }
         unbind(texture) {
-          const source3 = texture.source;
+          const source4 = texture.source;
           const boundTextures = this._boundTextures;
           const gl = this._gl;
           for (let i2 = 0; i2 < boundTextures.length; i2++) {
-            if (boundTextures[i2] === source3) {
+            if (boundTextures[i2] === source4) {
               this._activateLocation(i2);
-              const glTexture = this.getGlSource(source3);
+              const glTexture = this.getGlSource(source4);
               gl.bindTexture(glTexture.target, null);
               boundTextures[i2] = null;
             }
@@ -31854,114 +31854,114 @@ ${parts.join("\n")}
             this._gl.activeTexture(this._gl.TEXTURE0 + location);
           }
         }
-        _initSource(source3) {
+        _initSource(source4) {
           const gl = this._gl;
           const glTexture = new GlTexture(gl.createTexture());
-          glTexture.type = this._mapFormatToType[source3.format];
-          glTexture.internalFormat = this._mapFormatToInternalFormat[source3.format];
-          glTexture.format = this._mapFormatToFormat[source3.format];
-          glTexture.target = this._mapViewDimensionToGlTarget[source3.viewDimension];
+          glTexture.type = this._mapFormatToType[source4.format];
+          glTexture.internalFormat = this._mapFormatToInternalFormat[source4.format];
+          glTexture.format = this._mapFormatToFormat[source4.format];
+          glTexture.target = this._mapViewDimensionToGlTarget[source4.viewDimension];
           if (glTexture.target === null) {
-            throw new Error(`Unsupported view dimension: ${source3.viewDimension} with this webgl version: ${this._renderer.context.webGLVersion}`);
+            throw new Error(`Unsupported view dimension: ${source4.viewDimension} with this webgl version: ${this._renderer.context.webGLVersion}`);
           }
-          if (source3.uploadMethodId === "cube") {
+          if (source4.uploadMethodId === "cube") {
             glTexture.target = gl.TEXTURE_CUBE_MAP;
           }
-          if (source3.autoGenerateMipmaps && (this._renderer.context.supports.nonPowOf2mipmaps || source3.isPowerOfTwo)) {
-            const biggestDimension = Math.max(source3.width, source3.height);
-            source3.mipLevelCount = Math.floor(Math.log2(biggestDimension)) + 1;
+          if (source4.autoGenerateMipmaps && (this._renderer.context.supports.nonPowOf2mipmaps || source4.isPowerOfTwo)) {
+            const biggestDimension = Math.max(source4.width, source4.height);
+            source4.mipLevelCount = Math.floor(Math.log2(biggestDimension)) + 1;
           }
-          source3._gpuData[this._renderer.uid] = glTexture;
-          const added = this._managedTextures.add(source3);
+          source4._gpuData[this._renderer.uid] = glTexture;
+          const added = this._managedTextures.add(source4);
           if (added) {
-            source3.on("update", this.onSourceUpdate, this);
-            source3.on("resize", this.onSourceUpdate, this);
-            source3.on("styleChange", this.onStyleChange, this);
-            source3.on("updateMipmaps", this.onUpdateMipmaps, this);
+            source4.on("update", this.onSourceUpdate, this);
+            source4.on("resize", this.onSourceUpdate, this);
+            source4.on("styleChange", this.onStyleChange, this);
+            source4.on("updateMipmaps", this.onUpdateMipmaps, this);
           }
-          this.onSourceUpdate(source3);
-          this.updateStyle(source3, false);
+          this.onSourceUpdate(source4);
+          this.updateStyle(source4, false);
           return glTexture;
         }
-        onStyleChange(source3) {
-          this.updateStyle(source3, false);
+        onStyleChange(source4) {
+          this.updateStyle(source4, false);
         }
-        updateStyle(source3, firstCreation) {
+        updateStyle(source4, firstCreation) {
           const gl = this._gl;
-          const glTexture = this.getGlSource(source3);
+          const glTexture = this.getGlSource(source4);
           gl.bindTexture(glTexture.target, glTexture.texture);
-          this._boundTextures[this._activeTextureLocation] = source3;
+          this._boundTextures[this._activeTextureLocation] = source4;
           applyStyleParams(
-            source3.style,
+            source4.style,
             gl,
-            source3.mipLevelCount > 1,
+            source4.mipLevelCount > 1,
             this._renderer.context.extensions.anisotropicFiltering,
             "texParameteri",
             glTexture.target,
             // will force a clamp to edge if the texture is not a power of two
-            !this._renderer.context.supports.nonPowOf2wrapping && !source3.isPowerOfTwo,
+            !this._renderer.context.supports.nonPowOf2wrapping && !source4.isPowerOfTwo,
             firstCreation
           );
         }
-        onSourceUnload(source3, contextLost = false) {
-          const glTexture = source3._gpuData[this._renderer.uid];
+        onSourceUnload(source4, contextLost = false) {
+          const glTexture = source4._gpuData[this._renderer.uid];
           if (!glTexture) return;
           if (!contextLost) {
-            this.unbind(source3);
+            this.unbind(source4);
             this._gl.deleteTexture(glTexture.texture);
           }
-          source3.off("update", this.onSourceUpdate, this);
-          source3.off("resize", this.onSourceUpdate, this);
-          source3.off("styleChange", this.onStyleChange, this);
-          source3.off("updateMipmaps", this.onUpdateMipmaps, this);
+          source4.off("update", this.onSourceUpdate, this);
+          source4.off("resize", this.onSourceUpdate, this);
+          source4.off("styleChange", this.onStyleChange, this);
+          source4.off("updateMipmaps", this.onUpdateMipmaps, this);
         }
-        onSourceUpdate(source3) {
+        onSourceUpdate(source4) {
           const gl = this._gl;
-          const glTexture = this.getGlSource(source3);
+          const glTexture = this.getGlSource(source4);
           gl.bindTexture(glTexture.target, glTexture.texture);
-          this._boundTextures[this._activeTextureLocation] = source3;
-          const premultipliedAlpha = source3.alphaMode === "premultiply-alpha-on-upload";
+          this._boundTextures[this._activeTextureLocation] = source4;
+          const premultipliedAlpha = source4.alphaMode === "premultiply-alpha-on-upload";
           if (this._premultiplyAlpha !== premultipliedAlpha) {
             this._premultiplyAlpha = premultipliedAlpha;
             gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultipliedAlpha);
           }
-          if (this._uploads[source3.uploadMethodId]) {
-            this._uploads[source3.uploadMethodId].upload(source3, glTexture, gl, this._renderer.context.webGLVersion);
+          if (this._uploads[source4.uploadMethodId]) {
+            this._uploads[source4.uploadMethodId].upload(source4, glTexture, gl, this._renderer.context.webGLVersion);
           } else if (glTexture.target === gl.TEXTURE_2D) {
-            this._initEmptyTexture2D(glTexture, source3);
+            this._initEmptyTexture2D(glTexture, source4);
           } else if (glTexture.target === gl.TEXTURE_2D_ARRAY) {
-            this._initEmptyTexture2DArray(glTexture, source3);
+            this._initEmptyTexture2DArray(glTexture, source4);
           } else if (glTexture.target === gl.TEXTURE_CUBE_MAP) {
-            this._initEmptyTextureCube(glTexture, source3);
+            this._initEmptyTextureCube(glTexture, source4);
           } else {
             throw new Error("[GlTextureSystem] Unsupported texture target for empty allocation.");
           }
-          this._applyMipRange(glTexture, source3);
-          if (source3.autoGenerateMipmaps && source3.mipLevelCount > 1) {
-            this.onUpdateMipmaps(source3, false);
+          this._applyMipRange(glTexture, source4);
+          if (source4.autoGenerateMipmaps && source4.mipLevelCount > 1) {
+            this.onUpdateMipmaps(source4, false);
           }
         }
-        onUpdateMipmaps(source3, bind = true) {
-          if (bind) this.bindSource(source3, 0);
-          const glTexture = this.getGlSource(source3);
+        onUpdateMipmaps(source4, bind = true) {
+          if (bind) this.bindSource(source4, 0);
+          const glTexture = this.getGlSource(source4);
           this._gl.generateMipmap(glTexture.target);
         }
-        _initEmptyTexture2D(glTexture, source3) {
+        _initEmptyTexture2D(glTexture, source4) {
           const gl = this._gl;
           gl.texImage2D(
             gl.TEXTURE_2D,
             0,
             glTexture.internalFormat,
-            source3.pixelWidth,
-            source3.pixelHeight,
+            source4.pixelWidth,
+            source4.pixelHeight,
             0,
             glTexture.format,
             glTexture.type,
             null
           );
-          let w2 = Math.max(source3.pixelWidth >> 1, 1);
-          let h2 = Math.max(source3.pixelHeight >> 1, 1);
-          for (let level = 1; level < source3.mipLevelCount; level++) {
+          let w2 = Math.max(source4.pixelWidth >> 1, 1);
+          let h2 = Math.max(source4.pixelHeight >> 1, 1);
+          for (let level = 1; level < source4.mipLevelCount; level++) {
             gl.texImage2D(
               gl.TEXTURE_2D,
               level,
@@ -31977,27 +31977,27 @@ ${parts.join("\n")}
             h2 = Math.max(h2 >> 1, 1);
           }
         }
-        _initEmptyTexture2DArray(glTexture, source3) {
+        _initEmptyTexture2DArray(glTexture, source4) {
           if (this._renderer.context.webGLVersion !== 2) {
             throw new Error("[GlTextureSystem] TEXTURE_2D_ARRAY requires WebGL2.");
           }
           const gl2 = this._gl;
-          const depth = Math.max(source3.arrayLayerCount | 0, 1);
+          const depth = Math.max(source4.arrayLayerCount | 0, 1);
           gl2.texImage3D(
             gl2.TEXTURE_2D_ARRAY,
             0,
             glTexture.internalFormat,
-            source3.pixelWidth,
-            source3.pixelHeight,
+            source4.pixelWidth,
+            source4.pixelHeight,
             depth,
             0,
             glTexture.format,
             glTexture.type,
             null
           );
-          let w2 = Math.max(source3.pixelWidth >> 1, 1);
-          let h2 = Math.max(source3.pixelHeight >> 1, 1);
-          for (let level = 1; level < source3.mipLevelCount; level++) {
+          let w2 = Math.max(source4.pixelWidth >> 1, 1);
+          let h2 = Math.max(source4.pixelHeight >> 1, 1);
+          for (let level = 1; level < source4.mipLevelCount; level++) {
             gl2.texImage3D(
               gl2.TEXTURE_2D_ARRAY,
               level,
@@ -32014,7 +32014,7 @@ ${parts.join("\n")}
             h2 = Math.max(h2 >> 1, 1);
           }
         }
-        _initEmptyTextureCube(glTexture, source3) {
+        _initEmptyTextureCube(glTexture, source4) {
           const gl = this._gl;
           const totalCubeFaces = 6;
           for (let face = 0; face < totalCubeFaces; face++) {
@@ -32022,17 +32022,17 @@ ${parts.join("\n")}
               gl.TEXTURE_CUBE_MAP_POSITIVE_X + face,
               0,
               glTexture.internalFormat,
-              source3.pixelWidth,
-              source3.pixelHeight,
+              source4.pixelWidth,
+              source4.pixelHeight,
               0,
               glTexture.format,
               glTexture.type,
               null
             );
           }
-          let w2 = Math.max(source3.pixelWidth >> 1, 1);
-          let h2 = Math.max(source3.pixelHeight >> 1, 1);
-          for (let level = 1; level < source3.mipLevelCount; level++) {
+          let w2 = Math.max(source4.pixelWidth >> 1, 1);
+          let h2 = Math.max(source4.pixelHeight >> 1, 1);
+          for (let level = 1; level < source4.mipLevelCount; level++) {
             for (let face = 0; face < totalCubeFaces; face++) {
               gl.texImage2D(
                 gl.TEXTURE_CUBE_MAP_POSITIVE_X + face,
@@ -32056,11 +32056,11 @@ ${parts.join("\n")}
          * @param glTexture - The GL texture wrapper.
          * @param source - The texture source describing mipLevelCount.
          */
-        _applyMipRange(glTexture, source3) {
+        _applyMipRange(glTexture, source4) {
           if (this._renderer.context.webGLVersion !== 2) return;
-          if (source3.mipLevelCount <= 1) return;
+          if (source4.mipLevelCount <= 1) return;
           const gl = this._gl;
-          const maxLevel = Math.max((source3.mipLevelCount | 0) - 1, 0);
+          const maxLevel = Math.max((source4.mipLevelCount | 0) - 1, 0);
           gl.texParameteri(glTexture.target, gl.TEXTURE_BASE_LEVEL, 0);
           gl.texParameteri(glTexture.target, gl.TEXTURE_MAX_LEVEL, maxLevel);
         }
@@ -32083,9 +32083,9 @@ ${parts.join("\n")}
         _getGlSampler(sampler) {
           return this._glSamplers[sampler._resourceId] || this._initSampler(sampler);
         }
-        getGlSource(source3) {
-          source3._gcLastUsed = this._renderer.gc.now;
-          return source3._gpuData[this._renderer.uid] || this._initSource(source3);
+        getGlSource(source4) {
+          source4._gcLastUsed = this._renderer.gc.now;
+          return source4._gpuData[this._renderer.uid] || this._initSource(source4);
         }
         generateCanvas(texture) {
           const { pixels, width, height } = this.getPixels(texture);
@@ -33802,13 +33802,13 @@ ${parts.join("\n")}
             if (instruction.action === "texture") {
               const data2 = instruction.data;
               const texture = data2.image;
-              const source3 = texture ? canvasUtils.getCanvasSource(texture) : null;
-              if (!source3) continue;
+              const source4 = texture ? canvasUtils.getCanvasSource(texture) : null;
+              if (!source4) continue;
               const alpha2 = data2.alpha * groupAlpha;
               if (alpha2 <= 0) continue;
               const tint2 = multiplyHexColors(data2.style, groupTint);
               context2.globalAlpha = alpha2;
-              let drawSource = source3;
+              let drawSource = source4;
               if (tint2 !== 16777215) {
                 drawSource = canvasUtils.getTintedCanvas({ texture }, tint2);
               }
@@ -33818,7 +33818,7 @@ ${parts.join("\n")}
               let sy = frame.y * resolution;
               const sw = frame.width * resolution;
               const sh = frame.height * resolution;
-              if (drawSource !== source3) {
+              if (drawSource !== source4) {
                 sx = 0;
                 sy = 0;
               }
@@ -33841,8 +33841,8 @@ ${parts.join("\n")}
                 drawSource,
                 sx,
                 sy,
-                drawSource === source3 ? sw : drawSource.width,
-                drawSource === source3 ? sh : drawSource.height,
+                drawSource === source4 ? sw : drawSource.width,
+                drawSource === source4 ? sh : drawSource.height,
                 rotate ? 0 : data2.dx,
                 rotate ? 0 : data2.dy,
                 data2.dw,
@@ -33984,8 +33984,8 @@ ${parts.join("\n")}
             if (!element.packAsQuad) continue;
             const quad = element;
             const texture = quad.texture;
-            const source3 = texture ? canvasUtils.getCanvasSource(texture) : null;
-            if (!source3) continue;
+            const source4 = texture ? canvasUtils.getCanvasSource(texture) : null;
+            if (!source4) continue;
             const textureStyle = texture.source.style;
             const smoothProperty = contextSystem.smoothProperty;
             const shouldSmooth = textureStyle.scaleMode !== "nearest";
@@ -34060,7 +34060,7 @@ ${parts.join("\n")}
               drawY |= 0;
             }
             if (needsRepeat) {
-              let patternSource = source3;
+              let patternSource = source4;
               const canTint = tint !== 16777215 && !rotate;
               const fitsFrame = frame.width <= texture.source.width && frame.height <= texture.source.height;
               if (canTint && fitsFrame) {
@@ -34094,8 +34094,8 @@ ${parts.join("\n")}
               context2.fillRect(drawX, drawY, drawW, drawH);
             } else {
               const needsProcessing = tint !== 16777215 || rotate;
-              const processedSource = needsProcessing ? canvasUtils.getTintedCanvas({ texture }, tint) : source3;
-              const isProcessed = processedSource !== source3;
+              const processedSource = needsProcessing ? canvasUtils.getTintedCanvas({ texture }, tint) : source4;
+              const isProcessed = processedSource !== source4;
               context2.drawImage(
                 processedSource,
                 isProcessed ? 0 : sx,
@@ -39381,15 +39381,15 @@ ${parts.join("\n")}
          */
         destroyGpuRenderTarget(_gpuRenderTarget) {
         }
-        _ensureCanvas(source3) {
-          let canvas = source3.resource;
+        _ensureCanvas(source4) {
+          let canvas = source4.resource;
           if (!canvas || !CanvasSource.test(canvas)) {
-            canvas = DOMAdapter.get().createCanvas(source3.pixelWidth, source3.pixelHeight);
-            source3.resource = canvas;
+            canvas = DOMAdapter.get().createCanvas(source4.pixelWidth, source4.pixelHeight);
+            source4.resource = canvas;
           }
-          if (canvas.width !== source3.pixelWidth || canvas.height !== source3.pixelHeight) {
-            canvas.width = source3.pixelWidth;
-            canvas.height = source3.pixelHeight;
+          if (canvas.width !== source4.pixelWidth || canvas.height !== source4.pixelHeight) {
+            canvas.width = source4.pixelWidth;
+            canvas.height = source4.pixelHeight;
           }
           const context2 = canvas.getContext("2d");
           return { canvas, context: context2 };
@@ -39449,8 +39449,8 @@ ${parts.join("\n")}
         generateCanvas(texture) {
           const canvas = DOMAdapter.get().createCanvas();
           const context2 = canvas.getContext("2d");
-          const source3 = canvasUtils.getCanvasSource(texture);
-          if (!source3) {
+          const source4 = canvasUtils.getCanvasSource(texture);
+          if (!source4) {
             return canvas;
           }
           const frame = texture.frame;
@@ -39462,7 +39462,7 @@ ${parts.join("\n")}
           canvas.width = Math.ceil(sw);
           canvas.height = Math.ceil(sh);
           context2.drawImage(
-            source3,
+            source4,
             sx,
             sy,
             sw,
@@ -42884,19 +42884,19 @@ ${parts.join("\n")}
                 }
               }
               self2._autoResume();
-              var source3 = self2.ctx.createBufferSource();
-              source3.buffer = self2._scratchBuffer;
-              source3.connect(self2.ctx.destination);
-              if (typeof source3.start === "undefined") {
-                source3.noteOn(0);
+              var source4 = self2.ctx.createBufferSource();
+              source4.buffer = self2._scratchBuffer;
+              source4.connect(self2.ctx.destination);
+              if (typeof source4.start === "undefined") {
+                source4.noteOn(0);
               } else {
-                source3.start(0);
+                source4.start(0);
               }
               if (typeof self2.ctx.resume === "function") {
                 self2.ctx.resume();
               }
-              source3.onended = function() {
-                source3.disconnect(0);
+              source4.onended = function() {
+                source4.disconnect(0);
                 self2._audioUnlocked = true;
                 document.removeEventListener("touchstart", unlock, true);
                 document.removeEventListener("touchend", unlock, true);
@@ -46241,11 +46241,11 @@ ${e2}`);
   init_Texture();
   init_warn();
   init_Cache();
-  function createTexture(source3, loader, url) {
-    source3.label = url;
-    source3._sourceOrigin = url;
+  function createTexture(source4, loader, url) {
+    source4.label = url;
+    source4._sourceOrigin = url;
     const texture = new Texture({
-      source: source3,
+      source: source4,
       label: url
     });
     const unload = () => {
@@ -46261,7 +46261,7 @@ ${e2}`);
       }
     });
     texture.once("destroy", () => {
-      if (!source3.destroyed) {
+      if (!source4.destroyed) {
         warn("[Assets] A Texture managed by Assets was destroyed instead of unloaded! Use Assets.unload() instead of destroying the Texture.");
         unload();
       }
@@ -47520,6 +47520,528 @@ ${e2}`);
     Object.keys(assetKeyMap).filter((key) => !!ref[key]).forEach((key) => extensions.remove(ref[key]));
   });
 
+  // node_modules/pixi.js/lib/filters/defaults/blur/BlurFilter.mjs
+  init_TexturePool();
+  init_types();
+  init_deprecation();
+  init_Filter();
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/BlurFilterPass.mjs
+  init_TexturePool();
+  init_types();
+  init_Filter();
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gl/generateBlurGlProgram.mjs
+  init_GlProgram();
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/const.mjs
+  var GAUSSIAN_VALUES = {
+    5: [0.153388, 0.221461, 0.250301],
+    7: [0.071303, 0.131514, 0.189879, 0.214607],
+    9: [0.028532, 0.067234, 0.124009, 0.179044, 0.20236],
+    11: [93e-4, 0.028002, 0.065984, 0.121703, 0.175713, 0.198596],
+    13: [2406e-6, 9255e-6, 0.027867, 0.065666, 0.121117, 0.174868, 0.197641],
+    15: [489e-6, 2403e-6, 9246e-6, 0.02784, 0.065602, 0.120999, 0.174697, 0.197448]
+  };
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gl/generateBlurFragSource.mjs
+  var fragTemplate2 = [
+    "in vec2 vBlurTexCoords[%size%];",
+    "uniform sampler2D uTexture;",
+    "out vec4 finalColor;",
+    "void main(void)",
+    "{",
+    "    %blur%",
+    "}"
+  ].join("\n");
+  function generateBlurFragSource(kernelSize) {
+    const kernel = GAUSSIAN_VALUES[kernelSize];
+    const halfLength = kernel.length;
+    let blurLoop = "";
+    const prefixFirst = "finalColor = ";
+    const prefixRest = "    + ";
+    const template = "texture(uTexture, vBlurTexCoords[%index%]) * %value%";
+    for (let i2 = 0; i2 < kernelSize; i2++) {
+      const prefix = i2 === 0 ? prefixFirst : prefixRest;
+      const value = i2 < halfLength ? i2 : kernelSize - i2 - 1;
+      const blur = template.replace("%index%", i2.toString()).replace("%value%", kernel[value].toString());
+      blurLoop += `${prefix}${blur}
+`;
+    }
+    return fragTemplate2.replace("%blur%", `${blurLoop};`).replace("%size%", kernelSize.toString());
+  }
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gl/generateBlurVertSource.mjs
+  var vertTemplate = `
+    in vec2 aPosition;
+
+    uniform float uStrength;
+
+    out vec2 vBlurTexCoords[%size%];
+
+    uniform vec4 uInputSize;
+    uniform vec4 uOutputFrame;
+    uniform vec4 uOutputTexture;
+
+    vec4 filterVertexPosition( void )
+{
+    vec2 position = aPosition * uOutputFrame.zw + uOutputFrame.xy;
+
+    position.x = position.x * (2.0 / uOutputTexture.x) - 1.0;
+    position.y = position.y * (2.0*uOutputTexture.z / uOutputTexture.y) - uOutputTexture.z;
+
+    return vec4(position, 0.0, 1.0);
+}
+
+    vec2 filterTextureCoord( void )
+    {
+        return aPosition * (uOutputFrame.zw * uInputSize.zw);
+    }
+
+    void main(void)
+    {
+        gl_Position = filterVertexPosition();
+
+        float pixelStrength = uInputSize.%dimension% * uStrength;
+
+        vec2 textureCoord = filterTextureCoord();
+        %blur%
+    }`;
+  function generateBlurVertSource(kernelSize, x2) {
+    const halfLength = Math.ceil(kernelSize / 2);
+    let vertSource = vertTemplate;
+    let blurLoop = "";
+    let template;
+    if (x2) {
+      template = "vBlurTexCoords[%index%] =  textureCoord + vec2(%sampleIndex% * pixelStrength, 0.0);";
+    } else {
+      template = "vBlurTexCoords[%index%] =  textureCoord + vec2(0.0, %sampleIndex% * pixelStrength);";
+    }
+    for (let i2 = 0; i2 < kernelSize; i2++) {
+      let blur = template.replace("%index%", i2.toString());
+      blur = blur.replace("%sampleIndex%", `${i2 - (halfLength - 1)}.0`);
+      blurLoop += blur;
+      blurLoop += "\n";
+    }
+    vertSource = vertSource.replace("%blur%", blurLoop);
+    vertSource = vertSource.replace("%size%", kernelSize.toString());
+    vertSource = vertSource.replace("%dimension%", x2 ? "z" : "w");
+    return vertSource;
+  }
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gl/generateBlurGlProgram.mjs
+  function generateBlurGlProgram(horizontal, kernelSize) {
+    const vertex3 = generateBlurVertSource(kernelSize, horizontal);
+    const fragment3 = generateBlurFragSource(kernelSize);
+    return GlProgram.from({
+      vertex: vertex3,
+      fragment: fragment3,
+      name: `blur-${horizontal ? "horizontal" : "vertical"}-pass-filter`
+    });
+  }
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gpu/generateBlurProgram.mjs
+  init_GpuProgram();
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gpu/blur-template.wgsl.mjs
+  var source3 = "\n\nstruct GlobalFilterUniforms {\n  uInputSize:vec4<f32>,\n  uInputPixel:vec4<f32>,\n  uInputClamp:vec4<f32>,\n  uOutputFrame:vec4<f32>,\n  uGlobalFrame:vec4<f32>,\n  uOutputTexture:vec4<f32>,\n};\n\nstruct BlurUniforms {\n  uStrength:f32,\n};\n\n@group(0) @binding(0) var<uniform> gfu: GlobalFilterUniforms;\n@group(0) @binding(1) var uTexture: texture_2d<f32>;\n@group(0) @binding(2) var uSampler : sampler;\n\n@group(1) @binding(0) var<uniform> blurUniforms : BlurUniforms;\n\n\nstruct VSOutput {\n    @builtin(position) position: vec4<f32>,\n    %blur-struct%\n  };\n\nfn filterVertexPosition(aPosition:vec2<f32>) -> vec4<f32>\n{\n    var position = aPosition * gfu.uOutputFrame.zw + gfu.uOutputFrame.xy;\n\n    position.x = position.x * (2.0 / gfu.uOutputTexture.x) - 1.0;\n    position.y = position.y * (2.0*gfu.uOutputTexture.z / gfu.uOutputTexture.y) - gfu.uOutputTexture.z;\n\n    return vec4(position, 0.0, 1.0);\n}\n\nfn filterTextureCoord( aPosition:vec2<f32> ) -> vec2<f32>\n{\n    return aPosition * (gfu.uOutputFrame.zw * gfu.uInputSize.zw);\n}\n\nfn globalTextureCoord( aPosition:vec2<f32> ) -> vec2<f32>\n{\n  return  (aPosition.xy / gfu.uGlobalFrame.zw) + (gfu.uGlobalFrame.xy / gfu.uGlobalFrame.zw);\n}\n\nfn getSize() -> vec2<f32>\n{\n  return gfu.uGlobalFrame.zw;\n}\n\n\n@vertex\nfn mainVertex(\n  @location(0) aPosition : vec2<f32>,\n) -> VSOutput {\n\n  let filteredCord = filterTextureCoord(aPosition);\n\n  let pixelStrength = gfu.uInputSize.%dimension% * blurUniforms.uStrength;\n\n  return VSOutput(\n   filterVertexPosition(aPosition),\n    %blur-vertex-out%\n  );\n}\n\n@fragment\nfn mainFragment(\n  @builtin(position) position: vec4<f32>,\n  %blur-fragment-in%\n) -> @location(0) vec4<f32> {\n\n    var   finalColor = vec4(0.0);\n\n    %blur-sampling%\n\n    return finalColor;\n}\n";
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/gpu/generateBlurProgram.mjs
+  function generateBlurProgram(horizontal, kernelSize) {
+    const kernel = GAUSSIAN_VALUES[kernelSize];
+    const halfLength = kernel.length;
+    const blurStructSource = [];
+    const blurOutSource = [];
+    const blurSamplingSource = [];
+    for (let i2 = 0; i2 < kernelSize; i2++) {
+      blurStructSource[i2] = `@location(${i2}) offset${i2}: vec2<f32>,`;
+      if (horizontal) {
+        blurOutSource[i2] = `filteredCord + vec2(${i2 - halfLength + 1} * pixelStrength, 0.0),`;
+      } else {
+        blurOutSource[i2] = `filteredCord + vec2(0.0, ${i2 - halfLength + 1} * pixelStrength),`;
+      }
+      const kernelIndex = i2 < halfLength ? i2 : kernelSize - i2 - 1;
+      const kernelValue = kernel[kernelIndex].toString();
+      blurSamplingSource[i2] = `finalColor += textureSample(uTexture, uSampler, offset${i2}) * ${kernelValue};`;
+    }
+    const blurStruct = blurStructSource.join("\n");
+    const blurOut = blurOutSource.join("\n");
+    const blurSampling = blurSamplingSource.join("\n");
+    const finalSource = source3.replace("%blur-struct%", blurStruct).replace("%blur-vertex-out%", blurOut).replace("%blur-fragment-in%", blurStruct).replace("%blur-sampling%", blurSampling).replace("%dimension%", horizontal ? "z" : "w");
+    return GpuProgram.from({
+      vertex: {
+        source: finalSource,
+        entryPoint: "mainVertex"
+      },
+      fragment: {
+        source: finalSource,
+        entryPoint: "mainFragment"
+      }
+    });
+  }
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/BlurFilterPass.mjs
+  var _BlurFilterPass = class _BlurFilterPass2 extends Filter {
+    /**
+     * @param options
+     * @param options.horizontal - Do pass along the x-axis (`true`) or y-axis (`false`).
+     * @param options.strength - The strength of the blur filter.
+     * @param options.quality - The quality of the blur filter.
+     * @param options.kernelSize - The kernelSize of the blur filter.Options: 5, 7, 9, 11, 13, 15.
+     */
+    constructor(options) {
+      options = { ..._BlurFilterPass2.defaultOptions, ...options };
+      const glProgram = generateBlurGlProgram(options.horizontal, options.kernelSize);
+      const gpuProgram = generateBlurProgram(options.horizontal, options.kernelSize);
+      super({
+        glProgram,
+        gpuProgram,
+        resources: {
+          blurUniforms: {
+            uStrength: { value: 0, type: "f32" }
+          }
+        },
+        ...options
+      });
+      this.horizontal = options.horizontal;
+      this.legacy = options.legacy ?? false;
+      this._quality = 0;
+      this.quality = options.quality;
+      this.blur = options.strength;
+      this._blurUniforms = this.resources.blurUniforms;
+      this._uniforms = this._blurUniforms.uniforms;
+    }
+    /**
+     * Applies the filter.
+     * @param filterManager - The manager.
+     * @param input - The input target.
+     * @param output - The output target.
+     * @param clearMode - How to clear
+     */
+    apply(filterManager, input, output, clearMode) {
+      if (this.legacy) {
+        this._applyLegacy(filterManager, input, output, clearMode);
+      } else {
+        this._applyOptimized(filterManager, input, output, clearMode);
+      }
+    }
+    _applyLegacy(filterManager, input, output, clearMode) {
+      this._uniforms.uStrength = this.strength / this.passes;
+      if (this.passes === 1) {
+        filterManager.applyFilter(this, input, output, clearMode);
+      } else {
+        const tempTexture = TexturePool.getSameSizeTexture(input);
+        let flip = input;
+        let flop = tempTexture;
+        this._state.blend = false;
+        const shouldClear = filterManager.renderer.type === RendererType.WEBGPU;
+        for (let i2 = 0; i2 < this.passes - 1; i2++) {
+          filterManager.applyFilter(this, flip, flop, i2 === 0 ? true : shouldClear);
+          const temp = flop;
+          flop = flip;
+          flip = temp;
+        }
+        this._state.blend = true;
+        filterManager.applyFilter(this, flip, output, clearMode);
+        TexturePool.returnTexture(tempTexture);
+      }
+    }
+    _applyOptimized(filterManager, input, output, clearMode) {
+      this._uniforms.uStrength = this._calculateInitialStrength();
+      if (this.passes === 1) {
+        filterManager.applyFilter(this, input, output, clearMode);
+      } else {
+        const tempTexture = TexturePool.getSameSizeTexture(input);
+        let flip = input;
+        let flop = tempTexture;
+        this._state.blend = false;
+        const renderer = filterManager.renderer;
+        const isWebGPU = renderer.type === RendererType.WEBGPU;
+        const uboBatcher = isWebGPU ? renderer.renderPipes.uniformBatch : null;
+        for (let i2 = 0; i2 < this.passes - 1; i2++) {
+          if (uboBatcher) {
+            this.groups[1].setResource(uboBatcher.getUboResource(this._blurUniforms), 0);
+          }
+          filterManager.applyFilter(this, flip, flop, isWebGPU);
+          const temp = flop;
+          flop = flip;
+          flip = temp;
+          this._uniforms.uStrength *= 0.5;
+        }
+        if (uboBatcher) {
+          this.groups[1].setResource(uboBatcher.getUboResource(this._blurUniforms), 0);
+        }
+        this._state.blend = true;
+        filterManager.applyFilter(this, flip, output, clearMode);
+        TexturePool.returnTexture(tempTexture);
+      }
+    }
+    /**
+     * Calculates the initial strength for the first blur pass so that the combined
+     * effect of all passes matches the filter's target strength.
+     *
+     * Uses variance addition property: for Gaussian blurs, σ_combined² = Σσᵢ²
+     * With halving scheme (s, s/2, s/4, ...), sum of squared coefficients = 4/3
+     */
+    _calculateInitialStrength() {
+      let sumOfSquares = 1;
+      let coefficient = 0.5;
+      for (let i2 = 1; i2 < this.passes; i2++) {
+        sumOfSquares += coefficient * coefficient;
+        coefficient *= 0.5;
+      }
+      return this.strength / Math.sqrt(sumOfSquares);
+    }
+    /**
+     * Sets the strength of both the blur.
+     * @default 16
+     */
+    get blur() {
+      return this.strength;
+    }
+    set blur(value) {
+      this.padding = 1 + Math.abs(value) * 2;
+      this.strength = value;
+    }
+    /**
+     * Sets the quality of the blur by modifying the number of passes. More passes means higher
+     * quality blurring but the lower the performance.
+     * @default 4
+     */
+    get quality() {
+      return this._quality;
+    }
+    set quality(value) {
+      this._quality = value;
+      this.passes = value;
+    }
+  };
+  _BlurFilterPass.defaultOptions = {
+    /** The strength of the blur filter. */
+    strength: 8,
+    /** The quality of the blur filter. */
+    quality: 4,
+    /** The kernelSize of the blur filter.Options: 5, 7, 9, 11, 13, 15. */
+    kernelSize: 5,
+    /** Whether to use legacy blur pass behavior. */
+    legacy: false
+  };
+  var BlurFilterPass = _BlurFilterPass;
+
+  // node_modules/pixi.js/lib/filters/defaults/blur/BlurFilter.mjs
+  var BlurFilter = class extends Filter {
+    constructor(...args) {
+      let options = args[0] ?? {};
+      if (typeof options === "number") {
+        deprecation(v8_0_0, "BlurFilter constructor params are now options object. See params: { strength, quality, resolution, kernelSize }");
+        options = { strength: options };
+        if (args[1] !== void 0) options.quality = args[1];
+        if (args[2] !== void 0) options.resolution = args[2] || "inherit";
+        if (args[3] !== void 0) options.kernelSize = args[3];
+      }
+      options = { ...BlurFilterPass.defaultOptions, ...options };
+      const { strength, strengthX, strengthY, quality, ...rest } = options;
+      super({
+        ...rest,
+        compatibleRenderers: RendererType.BOTH,
+        resources: {}
+      });
+      this._repeatEdgePixels = false;
+      this.blurXFilter = new BlurFilterPass({ horizontal: true, ...options });
+      this.blurYFilter = new BlurFilterPass({ horizontal: false, ...options });
+      this.quality = quality;
+      this.strengthX = strengthX ?? strength;
+      this.strengthY = strengthY ?? strength;
+      this.repeatEdgePixels = false;
+    }
+    /**
+     * Applies the filter.
+     * @param filterManager - The manager.
+     * @param input - The input target.
+     * @param output - The output target.
+     * @param clearMode - How to clear
+     * @advanced
+     */
+    apply(filterManager, input, output, clearMode) {
+      const xStrength = Math.abs(this.blurXFilter.strength);
+      const yStrength = Math.abs(this.blurYFilter.strength);
+      if (xStrength && yStrength) {
+        const tempTexture = TexturePool.getSameSizeTexture(input);
+        this.blurXFilter.blendMode = "normal";
+        this.blurXFilter.apply(filterManager, input, tempTexture, true);
+        this.blurYFilter.blendMode = this.blendMode;
+        this.blurYFilter.apply(filterManager, tempTexture, output, clearMode);
+        TexturePool.returnTexture(tempTexture);
+      } else if (yStrength) {
+        this.blurYFilter.blendMode = this.blendMode;
+        this.blurYFilter.apply(filterManager, input, output, clearMode);
+      } else {
+        this.blurXFilter.blendMode = this.blendMode;
+        this.blurXFilter.apply(filterManager, input, output, clearMode);
+      }
+    }
+    updatePadding() {
+      if (this._repeatEdgePixels) {
+        this.padding = 0;
+      } else {
+        this.padding = Math.max(Math.abs(this.blurXFilter.blur), Math.abs(this.blurYFilter.blur)) * 2;
+      }
+    }
+    /**
+     * Sets the strength of both the blurX and blurY properties simultaneously.
+     * Controls the overall intensity of the Gaussian blur effect.
+     * @example
+     * ```ts
+     * // Set equal blur strength for both axes
+     * filter.strength = 8;
+     *
+     * // Will throw error if X and Y are different
+     * filter.strengthX = 4;
+     * filter.strengthY = 8;
+     * filter.strength; // Error: BlurFilter's strengthX and strengthY are different
+     * ```
+     * @default 8
+     * @throws {Error} If strengthX and strengthY are different values
+     */
+    get strength() {
+      if (this.strengthX !== this.strengthY) {
+        throw new Error("BlurFilter's strengthX and strengthY are different");
+      }
+      return this.strengthX;
+    }
+    set strength(value) {
+      this.blurXFilter.blur = this.blurYFilter.blur = value;
+      this.updatePadding();
+    }
+    /**
+     * Sets the number of passes for blur. More passes means higher quality blurring.
+     * Controls the precision and smoothness of the blur effect at the cost of performance.
+     * @example
+     * ```ts
+     * // High quality blur (slower)
+     * filter.quality = 8;
+     *
+     * // Low quality blur (faster)
+     * filter.quality = 2;
+     * ```
+     * @default 4
+     * @remarks Higher values produce better quality but impact performance
+     */
+    get quality() {
+      return this.blurXFilter.quality;
+    }
+    set quality(value) {
+      this.blurXFilter.quality = this.blurYFilter.quality = value;
+    }
+    /**
+     * Sets the strength of horizontal blur.
+     * Controls the blur intensity along the x-axis independently.
+     * @example
+     * ```ts
+     * // Apply horizontal-only blur
+     * filter.strengthX = 8;
+     * filter.strengthY = 0;
+     *
+     * // Create motion blur effect
+     * filter.strengthX = 16;
+     * filter.strengthY = 2;
+     * ```
+     * @default 8
+     */
+    get strengthX() {
+      return this.blurXFilter.blur;
+    }
+    set strengthX(value) {
+      this.blurXFilter.blur = value;
+      this.updatePadding();
+    }
+    /**
+     * Sets the strength of the vertical blur.
+     * Controls the blur intensity along the y-axis independently.
+     * @example
+     * ```ts
+     * // Apply vertical-only blur
+     * filter.strengthX = 0;
+     * filter.strengthY = 8;
+     *
+     * // Create radial blur effect
+     * filter.strengthX = 8;
+     * filter.strengthY = 8;
+     * ```
+     * @default 8
+     */
+    get strengthY() {
+      return this.blurYFilter.blur;
+    }
+    set strengthY(value) {
+      this.blurYFilter.blur = value;
+      this.updatePadding();
+    }
+    /**
+     * Sets the strength of both the blurX and blurY properties simultaneously
+     * @default 2
+     * @deprecated since 8.3.0
+     * @see BlurFilter.strength
+     */
+    get blur() {
+      deprecation("8.3.0", "BlurFilter.blur is deprecated, please use BlurFilter.strength instead.");
+      return this.strength;
+    }
+    set blur(value) {
+      deprecation("8.3.0", "BlurFilter.blur is deprecated, please use BlurFilter.strength instead.");
+      this.strength = value;
+    }
+    /**
+     * Sets the strength of the blurX property
+     * @default 2
+     * @deprecated since 8.3.0
+     * @see BlurFilter.strengthX
+     */
+    get blurX() {
+      deprecation("8.3.0", "BlurFilter.blurX is deprecated, please use BlurFilter.strengthX instead.");
+      return this.strengthX;
+    }
+    set blurX(value) {
+      deprecation("8.3.0", "BlurFilter.blurX is deprecated, please use BlurFilter.strengthX instead.");
+      this.strengthX = value;
+    }
+    /**
+     * Sets the strength of the blurY property
+     * @default 2
+     * @deprecated since 8.3.0
+     * @see BlurFilter.strengthY
+     */
+    get blurY() {
+      deprecation("8.3.0", "BlurFilter.blurY is deprecated, please use BlurFilter.strengthY instead.");
+      return this.strengthY;
+    }
+    set blurY(value) {
+      deprecation("8.3.0", "BlurFilter.blurY is deprecated, please use BlurFilter.strengthY instead.");
+      this.strengthY = value;
+    }
+    /**
+     * If set to true the edge of the target will be clamped
+     * @default false
+     */
+    get repeatEdgePixels() {
+      return this._repeatEdgePixels;
+    }
+    set repeatEdgePixels(value) {
+      this._repeatEdgePixels = value;
+      this.updatePadding();
+    }
+  };
+  BlurFilter.defaultOptions = {
+    /** The strength of the blur filter. */
+    strength: 8,
+    /** The quality of the blur filter. */
+    quality: 4,
+    /** The kernelSize of the blur filter.Options: 5, 7, 9, 11, 13, 15. */
+    kernelSize: 5,
+    /** Whether to use legacy blur pass behavior. */
+    legacy: false
+  };
+
   // node_modules/pixi.js/lib/index.mjs
   init_textureFrom();
   init_Container();
@@ -47727,6 +48249,19 @@ ${e2}`);
       this.mask = mask;
       getBg().getBgCtr().addChild(mask);
     }
+    blurSymbols(blurnum) {
+      for (let num = 0; num < this.Symbols.length; num++) {
+        let symbols = this.Symbols[num];
+        symbols.filters = [
+          new BlurFilter({
+            strength: blurnum
+          })
+        ];
+      }
+    }
+    getBlurSymbols(BlurNum) {
+      return this.blurSymbols(BlurNum);
+    }
   };
 
   // src/ts/view/background.ts
@@ -47834,10 +48369,12 @@ ${e2}`);
         Sound2.spinSound.play();
         spinBtn.innerHTML = "STOP";
         reel.playReelSpin();
+        reel.getBlurSymbols(2);
       } else {
         spinBtn.innerHTML = "SPIN";
         reel.stopReelSpin();
         Sound2.spinSound.stop();
+        reel.getBlurSymbols(0);
       }
     });
   }
