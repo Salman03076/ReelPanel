@@ -1,19 +1,49 @@
+import { Howl } from "howler";
 
-
+// Game Sound initialization
 export class SoundManager {
-    static click = new Audio("assets/reelSymbols/click.mp3")
-    static flip = new Audio("assets/gameAudio/flip-Sound.wav");
-    static match = new Audio("assets/audio/match.mp3");
-    static win = new Audio("assets/gameAudio/wining.mp3");
+    private audioPaths = {
+        background: "assets/audio/background.mp3",
+        click: "assets/audio/click.mp3",
+        spin: "/assets/audio/spin.wav",
+        reelStop: "assets/audio/reelStop.mp3",
+        win: "assets/audio/win.mp3",
+        bigWin: "assets/audio/bigWin.mp3",
+    };
 
-    static play(sound: HTMLAudioElement): void {
-        sound.currentTime = 0;
-        sound.play();
-    }
+
+    
+    public backgroundSound = new Howl({
+        src: [this.audioPaths.background],
+        loop: true,
+        volume: 0.3,
+    });
+
+    public clickSound = new Howl({
+        src: [this.audioPaths.click],
+        volume: 1,
+
+    });
+
+    
 
 
-    static stop(sound: HTMLAudioElement): void {
-        sound.pause();
-    }
+    public spinSound = new Howl({
+        src: [this.audioPaths.spin],
+                loop: true,
+                volume: 0.8,
 
+    });
+
+    // public reelStopSound = new Howl({
+    //     src: [this.audioPaths.reelStop],
+    // });
+
+    // public winSound = new Howl({
+    //     src: [this.audioPaths.win],
+    // });
+
+    // public bigWinSound = new Howl({
+    //     src: [this.audioPaths.bigWin],
+    // });
 }
