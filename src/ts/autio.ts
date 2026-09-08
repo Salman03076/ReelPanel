@@ -5,7 +5,7 @@ export class SoundManager {
     private audioPaths = {
         background: "assets/audio/background.mp3",
         click: "assets/audio/click.mp3",
-        spin: "/assets/audio/spin.mp3",
+        spin: "assets/audio/spin.mp3",
         reelStop: "assets/audio/reelStop.mp3",
         win: "assets/audio/win.mp3",
         bigWin: "assets/audio/bigWin.mp3",
