@@ -1,89 +1,79 @@
 * {
-    padding: 0px;
-    margin: 0px;
+  padding: 0px;
+  margin: 0px;
 }
 
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 #loadBackground {
-    position: absolute;
-    height: 100%; 
-     width: 100%;
-     /* background-image: url("assets/loadbg/loadbg.png");  */
-
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
-
-
 #gameContainer {
-    height: 500px;
-    width: 500px;
+  height: 500px;
+  width: 500px;
 }
 
 #gameName {
-    position: relative;
-    height: 40pxpx;
-    color: #256CF1;
-    -webkit-text-stroke: 1px #8B0000;
-    text-shadow: 0 4px 0 #5a0000;
-    display: flex;
-    font-size: 50px;
-    flex-direction: column;
-    justify-content: center;
-    justify-self: center;
-    z-index: 8;
-    bottom: 489px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    display: none;
+  position: relative;
+  height: 40pxpx;
+  color: #256cf1;
+  -webkit-text-stroke: 1px #8b0000;
+  text-shadow: 0 4px 0 #5a0000;
+  display: flex;
+  font-size: 50px;
+  flex-direction: column;
+  justify-content: center;
+  justify-self: center;
+  z-index: 8;
+  bottom: 489px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  display: none;
 }
-
 
 #loadBar {
-    position: relative;
-    height: 22px;
-    width: 85%;
-    background-color: white;
-    border: 1px solid goldenrod;
-    border-radius: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-self: center;
-    top: 200px;
-
+  position: relative;
+  height: 22px;
+  width: 85%;
+  background-color: white;
+  border: 1px solid goldenrod;
+  border-radius: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-self: center;
+  top: 200px;
 }
 
-
-
 #load {
-    position: absolute;
-    height: 20px;
-    width: 100%;
-
+  position: absolute;
+  height: 20px;
+  width: 100%;
 }
 
 #spineBtn {
-    height: 70px;
-    width: 70px;
-    background-color: #960000;
-    border: none;
-    border-radius: 50%;
-    color: gold;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    top: 244px;
-    justify-self: center;   
-    border: 2px solid gold;
-    display: none;
-
+  height: 70px;
+  width: 70px;
+  background-color: #960000;
+  border: none;
+  border-radius: 50%;
+  color: gold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 244px;
+  justify-self: center;
+  border: 2px solid gold;
+  display: none;
 }
 
 #spineBtn:hover {
-    cursor: pointer;
-    background-color: #962b2b;
+  cursor: pointer;
+  background-color: #962b2b;
 }

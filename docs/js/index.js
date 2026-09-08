@@ -48249,6 +48249,7 @@ ${e2}`);
       this.mask = mask;
       getBg().getBgCtr().addChild(mask);
     }
+    // Blur Symbools
     blurSymbols(blurnum) {
       for (let num = 0; num < this.Symbols.length; num++) {
         let symbols = this.Symbols[num];
@@ -48324,7 +48325,7 @@ ${e2}`);
     audioPaths = {
       background: "assets/audio/background.mp3",
       click: "assets/audio/click.mp3",
-      spin: "/assets/audio/spin.wav",
+      spin: "/assets/audio/spin.mp3",
       reelStop: "assets/audio/reelStop.mp3",
       win: "assets/audio/win.mp3",
       bigWin: "assets/audio/bigWin.mp3"
@@ -48369,12 +48370,12 @@ ${e2}`);
         Sound2.spinSound.play();
         spinBtn.innerHTML = "STOP";
         reel.playReelSpin();
-        reel.getBlurSymbols(2);
+        reel.getBlurSymbols(1);
       } else {
         spinBtn.innerHTML = "SPIN";
         reel.stopReelSpin();
-        Sound2.spinSound.stop();
         reel.getBlurSymbols(0);
+        Sound2.spinSound.stop();
       }
     });
   }

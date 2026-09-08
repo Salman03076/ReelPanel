@@ -1,6 +1,6 @@
 import { Reel } from "./view/Reel.js";
 import { background } from "./view/background.js";
-import { loadAssets } from "./ulity.js"
+import { loadAssets } from "./ulity.js";
 import { SoundManager } from "./autio.js";
 
 let bg: background;
@@ -9,42 +9,40 @@ let Sound: SoundManager;
 
 // all file initialization
 export async function gameInit(): Promise<void> {
-    Sound = new SoundManager();
+  Sound = new SoundManager();
 
-    bg = new background();
+  bg = new background();
 
-    await loadAssets();
+  await loadAssets();
 
-    const reel = new Reel();
+  const reel = new Reel();
 
-    const spinBtn = document.getElementById("spineBtn") as HTMLButtonElement;
+  const spinBtn = document.getElementById("spineBtn") as HTMLButtonElement;
 
-    spinBtn.addEventListener(`click`, () => {
-        Sound.clickSound.play()
-        if (!reel.getReelState()) {
-            Sound.spinSound.play()
-            spinBtn.innerHTML = "STOP";
-            reel.playReelSpin();
-            reel.getBlurSymbols(2)
-        } else {
-            spinBtn.innerHTML = "SPIN";
-            reel.stopReelSpin();
-            Sound.spinSound.stop()
-            reel.getBlurSymbols(0)
-
-        }
-    });
+  spinBtn.addEventListener(`click`, () => {
+    Sound.clickSound.play();
+    if (!reel.getReelState()) {
+      Sound.spinSound.play();
+      spinBtn.innerHTML = "STOP";
+      reel.playReelSpin();
+      reel.getBlurSymbols(1);
+    } else {
+      spinBtn.innerHTML = "SPIN";
+      reel.stopReelSpin();
+      reel.getBlurSymbols(0);
+      Sound.spinSound.stop();
+    }
+  });
 }
 
 export const getSoundManager = () => {
-    return Sound;
+  return Sound;
 };
 
 export const getBg = () => {
-    return bg;
+  return bg;
 };
 
 export const getSpinBtn = () => {
-    return spinBtn;
+  return spinBtn;
 };
-
